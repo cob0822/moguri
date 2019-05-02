@@ -1,0 +1,110 @@
+*{
+	margin: 0px;
+	padding: 0px;
+}
+
+body{
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+ 
+footer {
+  margin-top: auto;
+}
+
+.wrapper {
+    display: flex;
+    width: 100%;
+}
+
+.tipsbar{
+	display:inline-block;
+}
+
+/*-- PC版表示CSS  --*/
+.phone_area{
+  display:none;
+}
+
+/*-- スマホ版表示CSS  --*/
+@media screen and (max-width: 768px){
+  .pc_area{
+    display:none;
+  }
+  .phone_area{
+    display:block;
+  }
+}
+
+#sidebar {
+    width: 250px;
+    position: fixed;
+    top: 0;
+    left: 150;
+    height: 100vh;
+    z-index: 999;
+    background: #7386D5;
+    color: #fff;
+    transition: all 0.3s;
+}
+
+ul.sidenav {
+	list-style-type: none;
+	border:1px solid #000000;
+	margin: 0;
+	padding: 0;
+	width: 200px;
+	background-color: #EEEEEE;
+	position: fixed;
+	overflow: auto;
+}
+ul.sidenav li a {
+    border:1px solid #000000;
+	display: block;
+	color: #000000;
+	padding: 8px 16px;
+	text-decoration: none;
+}
+ul.sidenav li a.active {
+	background-color: #808080;
+	color: #000000;
+}
+ul.sidenav li a:hover:not(.active) {
+	background-color: #AAAAAA;
+	color: #000000;
+}
+li.menu{
+    border:1px solid #000000;
+	display: block;
+	color: #000000;
+	padding: 8px 16px;
+	text-decoration: none;
+	background-color: #550000;
+    color:white;
+}
+div.content {
+	margin-left: 25%;
+	padding: 1px 16px;
+	height: 1000px;
+}
+@media screen and (max-width: 900px) {
+	ul.sidenav {
+		width: 100%;
+		height: auto;
+		position: fixed;
+	}
+	ul.sidenav li a {
+		float: right;
+		padding: 15px;
+	}
+	div.content {
+		margin-left: 0;
+	}
+}
+@media screen and (max-width: 480px) {
+	ul.sidenav li a{
+		text-align: center;
+		float: none;
+	}
+}
