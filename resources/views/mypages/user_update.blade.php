@@ -12,6 +12,16 @@
         <div class="col-8">
             <h3>MYページ - ユーザー情報編集</h3>
             
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
 
         </div>
         <aside class="col-4">
