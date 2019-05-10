@@ -6,6 +6,12 @@
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css">
         <link rel="stylesheet" href="{{ secure_asset('css/style.css') }}">
+        <script src="https://ajaxzip3.github.io/ajaxzip3.js" charset="UTF-8"></script>
+        
+        <!-- グーグルマップに複数ピンを立てる
+        <script src="./sample.js"></script>
+        <script src="https://maps.googleapis.com/maps/api/js?callback=initMap"></script>
+        -->
     </head>
 
     <body>

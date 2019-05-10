@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 
+use App\User;
+
 class UsersController extends Controller
 {
     /**
@@ -85,13 +87,54 @@ class UsersController extends Controller
     public function mypost(){
         return view("mypages.posted");
     }
-    
-    public function favorites(){
-        return view("mypages.favorites");
+
+    public function information($id){
+        $user = User::find($id);
+        
+        return view("mypages.user_update", [
+            "user" => $user,    
+        ]);
     }
     
-    public function information(){
-        return view("mypages.user_update");
+    public function changeInformation(Request $request, $id){
+            $this->validate($request, [
+               "name" => "required|string|min:4|max:12",
+               "email" => "required|string|email|max:255|unique:users",
+            ]);
+
+        \DB::table("users")->where("id", $id)->update([
+            "name" => $request->name,
+            "email" => $request->email,
+        ]);
+        
+        $user = User::find($id);
+        
+        return view("mypages.user_update_complete", [
+            "user" => $user,
+        ]);
     }
     
+    //お気に入り登録メソッドの呼び出し
+    public function favorite(Request $request){
+        \Auth::user()->favorites($request->id);
+        return back();
+    }
+    
+    //お気に入り削除メソッドの呼び出し
+    public function unfavorite(Request $request){
+        \Auth::user()->unfavorites($request->id);
+        return back();
+    }
+    
+    //お気に入り表示機能
+    public function favoritesPoints($id){
+        $user = User::find($id);
+        $favorites = $user->favoritesPoint()->paginate(10);
+        
+        //$data += $this->counts($user);
+        
+        return view("mypages.favorites", [
+            "favorites" => $favorites,    
+        ]);
+    }
 }

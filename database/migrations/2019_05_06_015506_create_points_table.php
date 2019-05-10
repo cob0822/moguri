@@ -17,9 +17,7 @@ class CreatePointsTable extends Migration
             $table->increments('id');
             $table->string("area");
             $table->string("prefecture");
-            $table->string("city");
-            $table->string("block");
-            $table->string("street");
+            $table->string("belowPrefecture");
             $table->string("latitude");
             $table->string("longitude");
             $table->timestamps();

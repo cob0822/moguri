@@ -1,14 +1,15 @@
 <header class="mb-4">
     
     @if(Auth::check())
+        <div class="fixed-top pt-2 pr-3" style="left:initial;">
+            {!! link_to_route("logout.get", "ログアウト", [], ["class" => "btn btn-warning"]) !!}
+            <span class="pl-3 pr-2">{{Auth::user()->name}}</span>
+        </div>
+    @else
         <!-- 以下のdivコードは　https://teratail.com/questions/148276　でググった-->
         <div class="fixed-top pt-2 pr-3" style="left:initial;">
             {!! link_to_route("signup.get", "ユーザー登録", [], ["class" => "btn btn-warning"]) !!}
             {!! link_to_route("login", "ログイン", [], ["class" => "btn btn-warning"]) !!}
-        </div>
-    @else
-        <div class="fixed-top pt-2 pr-3" style="left:initial;">
-            {!! link_to_route("logout.get", "ログアウト", [], ["class" => "btn btn-warning"]) !!}
         </div>
     @endif
         

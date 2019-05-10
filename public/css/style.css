@@ -108,3 +108,8 @@ div.content {
 		float: none;
 	}
 }
+/*グーグルマップに複数ピンを立てる*/
+#sample{
+	width:700px;
+	height:400px;
+}
