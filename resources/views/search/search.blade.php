@@ -18,7 +18,7 @@
                     <div class="col-4 lg-4">
                         <p>何が見たいですか? (必須)</p>
                         
-                        <input type="text" name="category" list="category" placeholder="入力 or 選択" autocomplete="off">
+                        <input type="text" name="category" list="category" placeholder="入力 or 選択">
                           <datalist id="category">
                               
                             <!--categoryMonths tableからカテゴリ一覧を取得-->
@@ -38,18 +38,18 @@
                             <div class="col-3 col-lg-3">
                                 <select name="month">
                                     <option value="-">-</option>
-                                    <option value="Jan">1</option>
-                                    <option value="Feb">2</option>
-                                    <option value="Mar">3</option>
-                                    <option value="Apl">4</option>
-                                    <option value="May">5</option>
-                                    <option value="Jun">6</option>
-                                    <option value="Jul">7</option>
-                                    <option value="Aug">8</option>
-                                    <option value="Sep">9</option>
-                                    <option value="Oct">10</option>
-                                    <option value="Nov">11</option>
-                                    <option value="Dec">12</option>
+                                    <option value="1">1</option>
+                                    <option value="2">2</option>
+                                    <option value="4">3</option>
+                                    <option value="8">4</option>
+                                    <option value="16">5</option>
+                                    <option value="32">6</option>
+                                    <option value="64">7</option>
+                                    <option value="128">8</option>
+                                    <option value="256">9</option>
+                                    <option value="512">10</option>
+                                    <option value="1024">11</option>
+                                    <option value="2048">12</option>
                                 </select>
                             </div>
                             <div class="col">

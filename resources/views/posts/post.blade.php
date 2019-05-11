@@ -48,16 +48,16 @@
                         <option value="">-</option>
                         <option value="1">1</option>
                         <option value="2">2</option>
-                        <option value="3">3</option>
-                        <option value="4">4</option>
-                        <option value="5">5</option>
-                        <option value="6">6</option>
-                        <option value="7">7</option>
-                        <option value="8">8</option>
-                        <option value="9">9</option>
-                        <option value="10">10</option>
-                        <option value="11">11</option>
-                        <option value="12">12</option>
+                        <option value="4">3</option>
+                        <option value="8">4</option>
+                        <option value="16">5</option>
+                        <option value="32">6</option>
+                        <option value="64">7</option>
+                        <option value="128">8</option>
+                        <option value="256">9</option>
+                        <option value="512">10</option>
+                        <option value="1024">11</option>
+                        <option value="2048">12</option>
                     </select>
                 </div>
                 <div class="col">
@@ -77,37 +77,42 @@
             </div>
             <div class="row">
                 <div class="col-3">
-                    <!--以下のプルダウンフォームはHTMLのベタ書きなので、Laravelの書き方に変更する -->
-                    <form action="#">
-                    <input type="text" name="category" list="category" placeholder="入力 or 選択" autocomplete="off">
-                      <datalist id="category">
-                        <option value="マナティー">
-                      　<option value="クジラ">
-                      　<option value="沈没船">
-                      </datalist>
-                    </form>
+                    <input type="text" name="category1" list="category1" placeholder="入力 or 選択">
+                          <datalist id="category1">
+                            <!--categoryMonths tableからカテゴリ一覧を取得-->
+                            <!--配列が多重になっているので、foreachを２回回している-->
+                            @foreach($categories as $categoryNum)
+                                @foreach($categoryNum as $category)
+                                    <option value={{$category}}>
+                                @endforeach
+                            @endforeach
+                          </datalist>
                 </div>
+                <!--既に選択したカテゴリは表示しないようにするか、カテゴリが重複した場合はバリデーションで引っ掛ける -->
                 <div class="col-3">
-                    <!--以下のプルダウンフォームはHTMLのベタ書きなので、Laravelの書き方に変更する -->
-                    <form action="#">
-                    <input type="text" name="category" list="category" placeholder="入力 or 選択" autocomplete="off">
-                      <datalist id="category">
-                        <option value="マナティー">
-                      　<option value="クジラ">
-                      　<option value="沈没船">
-                      </datalist>
-                    </form>
+                    <input type="text" name="category2" list="category2" placeholder="入力 or 選択">
+                          <datalist id="category2">
+                            <!--categoryMonths tableからカテゴリ一覧を取得-->
+                            <!--配列が多重になっているので、foreachを２回回している-->
+                            @foreach($categories as $categoryNum)
+                                @foreach($categoryNum as $category)
+                                        <option value={{$category}}>
+                                @endforeach
+                            @endforeach
+                          </datalist>
                 </div>
+                <!--既に選択したカテゴリは表示しないようにするか、カテゴリが重複した場合はバリデーションで引っ掛ける -->
                 <div class="col-3">
-                    <!--以下のプルダウンフォームはHTMLのベタ書きなので、Laravelの書き方に変更する -->
-                    <form action="#">
-                    <input type="text" name="category" list="category" placeholder="入力 or 選択" autocomplete="off">
-                      <datalist id="category">
-                        <option value="マナティー">
-                      　<option value="クジラ">
-                      　<option value="沈没船">
-                      </datalist>
-                    </form>
+                    <input type="text" name="category3" list="category3" placeholder="入力 or 選択">
+                          <datalist id="category3">
+                            <!--categoryMonths tableからカテゴリ一覧を取得-->
+                            <!--配列が多重になっているので、foreachを２回回している-->
+                            @foreach($categories as $categoryNum)
+                                @foreach($categoryNum as $category)
+                                    <option value={{$category}}>
+                                @endforeach
+                            @endforeach
+                          </datalist>
                 </div>
             </div>
             

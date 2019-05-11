@@ -85,7 +85,11 @@ class UsersController extends Controller
     }
     
     public function mypost(){
-        return view("mypages.posted");
+        $posts = \DB::table("reviews")->where("user_id", \Auth::id())->get();
+        
+        return view("mypages.posted", [
+            "posts" => $posts,    
+        ]);
     }
 
     public function information($id){

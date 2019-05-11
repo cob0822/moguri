@@ -93,13 +93,10 @@ class SearchController extends Controller
     }
     
     public function searching(Request $request){
-        //test用に全てのポイントを返す
-        //$points = Point::all();
-        
         $category = $request->category;
-        
-        
-        
+        $area = $request->area;
+        //search.blade.phpのoption valueはint型で渡せないので、int型に変換
+        $month = (int)$request->month;
         $points;
         
         //検索ロジック
@@ -107,16 +104,10 @@ class SearchController extends Controller
         
         if($request->month != "-" and $request->area != "-"){
             //カテゴリと月とエリアが指定されている場合の検索
-            
+            $points = \DB::select("select * from `points` inner join `categoryMonths` on `points`.`id` = `categoryMonths`.`point_id` where `category` = '".$category."' and `months` & ".$month." <> 0 and (`prefecture` = '".$area."' or `area` = '".$area."') ");
         }elseif($request->month != "-"){
             //カテゴリと月が指定されている場合の検索
-            //points = \DB::table("points")->join("categoryMonths", "points.id", "=", "categoryMonths.point_id")
-            //    ->where("category",$request->category)->where
-                
-                
-                
-                
-                
+            $points = \DB::select("select * from `points` inner join `categoryMonths` on `points`.`id` = `categoryMonths`.`point_id` where `category` = '".$category."' and `months` & ".$month." <> 0");
         }elseif($request->area != "-"){
             //カテゴリとエリアが指定されている場合の検索
             //A and (B or C)の処理のため、クロージャを使用している
@@ -131,8 +122,6 @@ class SearchController extends Controller
             //カテゴリのみ指定されている場合の検索
             $points = \DB::table("points")->join("categoryMonths", "points.id", "=", "categoryMonths.point_id")->where("category",$request->category)->get();
         }
-        
-        
         
         //レビューの平均値を返す 今回はsearch_complete Viewにベタ書き
         
