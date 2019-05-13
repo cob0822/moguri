@@ -15,8 +15,224 @@ class PostsController extends Controller
         ]);
     }
     
-    public function posting(){
+    //ジオコーディングAPIの呼び出し(緯度経度の取得)
+    public function getLatLng($googlemap_api,$strAddress = null)
+    {
+        if($strAddress == null) {
+            $strAddress = $this->adrs;
+        }
+        if (!is_null($strAddress) && '' != $strAddress) {
+            $google_leapis_url = "https://maps.googleapis.com/maps/api/geocode/json";
+
+            $pattern    = "/[+]/";
+            $strAddress = preg_replace($pattern, "%20", $strAddress);
+            // エンコードして半角空白をgeometry用に変換する
+            $url_encode = /*urlencode(*/$strAddress/*)*/;
+
+            //dd($google_leapis_url."?address=".$url_encode."&key=".$googlemap_api);
+            $jsonData = json_decode(file_get_contents($google_leapis_url."?address=".$url_encode."&key=".$googlemap_api, false, stream_context_create(array(
+                'http' => array(
+                    'timeout'=>10 // タイムアウト
+                )
+            ))), true);
+            
+            //dd($jsonData["results"][0]["geometry"]);
+            if(isset($jsonData["results"][0]["geometry"]["location"])) {
+                $this->latitude = $jsonData["results"][0]["geometry"]["location"]["lat"];
+                $this->longitude = $jsonData["results"][0]["geometry"]["location"]["lng"];
+            } else {
+                $this->latitude = 0.0;
+                $this->longitude = 0.0;
+            }
+        }
+    }
+    
+    public function post_confirm(Request $request){
+        $prefecture = $request->pref31;
+        $belowPrefecture = $request->addr31;
+        $month = (int)$request->month;
+        $categories = [$request->category1, $request->category2, $request->category3];
+        //categoriesからデータ取得できれば、以下１〜３は削除する
+        $category1 = $request->category1;
+        $category2 = $request->category2;
+        $category3 = $request->category3;
+        $review = $request->review;
+        $comment = $request->comment;
+        $area = $this->getArea($prefecture);
         
-        return view("posts.post_complete");
+        //ジオコーディングメソッドの実行
+        $lmg = $this->getLatLng("AIzaSyATubpo-Sq-u-uWRaIZn7gv84_lwCNzRK8", $prefecture.$belowPrefecture);
+        
+        //ジオコーディングメソッドで取得した緯度経度を変数に格納する
+        $latitude = $this->latitude;
+        $longitude = $this->longitude;
+
+        $data = [
+            "prefecture" => $prefecture,
+            "belowPrefecture" => $belowPrefecture,
+            "month" => $month,
+            "categories" => $categories,
+            "category1" => $category1,
+            "category2" => $category2,
+            "category3" => $category3,
+            "review" => $review,
+            "comment" => $comment, 
+            "latitude" => $latitude,
+            "longitude" => $longitude,
+            "area" => $area,
+        ];
+        
+        //$dataをセッションに保存
+        $request->session()->put($data);
+        
+        return view("posts.post_confirm", $data);
+    }
+    
+    public function post_complete(Request $request){
+        
+        //post_confirmメソッドでセッションに保存した$dataを取り出す
+        $data = session()->all();
+        $point;
+        
+        //pointsテーブルの更新　緯度経度が存在していなければ、レコードを新規に作成する
+        if(\DB::table("points")->where("latitude", $data["latitude"])->where("longitude", $data["longitude"])->exists()){
+            $point = \DB::table("points")->where("latitude", $data["latitude"])->where("longitude", $data["longitude"])->get();
+        }else{
+            \DB::table('points')->insert([
+                'area' => $data["area"],
+                'prefecture' => $data["prefecture"],
+                'belowPrefecture' => $data["belowPrefecture"],
+                'latitude' => $data["latitude"],
+                'longitude' => $data["longitude"],
+                'created_at' => date("Y-m-d H:i:s"),
+                'updated_at' => date("Y-m-d H:i:s"),
+            ]);
+            $point = \DB::table("points")->where("latitude", $data["latitude"])->where("longitude", $data["longitude"])->get();
+        }
+        
+        //ポイントidを取得(配列型なので、最初の要素[0]のみ取得)
+        $point_id = $point->pluck("id")[0];
+        
+        $user_id;
+        
+        if(\Auth::check()){
+            $user_id = \Auth::id();
+        }else{
+            //未ログインの場合は、ゲストユーザー(id=2147483647)として登録
+            $user_id = 2147483647;
+        }
+        
+        //reviewsテーブルの更新
+        \DB::table('reviews')->insert([
+            'user_id' => $user_id,
+            'point_id' => $point_id,
+            'category1' => $data["category1"],
+            'category2' => $data["category2"],
+            'category3' => $data["category3"],
+            'month' => $data["month"],
+            'review' => $data["review"],
+            'comment' => $data["comment"],
+            'image1' => "test",
+            'image2' => "test",
+            'image3' => "test",
+            "reviewDate" => date("Y-m-d H:i:s"),
+            'created_at' => date("Y-m-d H:i:s"),
+            'updated_at' => date("Y-m-d H:i:s"),
+        ]);
+        
+        //categoryMonthsテーブルの更新
+        //category1
+        if(\DB::table("categoryMonths")->where("point_id", $point_id)->where("category", $data["category1"])->exists()){
+            //月判定のロジック
+            
+            //categoryMonthsテーブルの該当レコード → monthカラム取り出し
+            $checkRecord = \DB::table("categoryMonths")->where("point_id", $point_id)->where("category", $data["category1"])->get();
+            
+            $checkRecordMonth = $checkRecord->pluck("months")[0];
+            
+            //controllerの共通メソッド　第一引数：投稿された月　第二引数：categoryMonthsテーブルに既に登録されている月の一覧
+            //$existFlagに、第二引数に第一引数が含まれているかの確認結果を格納
+            $existFlag = $this->getMonths($data["month"], $checkRecordMonth);
+            
+            //monthsカラムに投稿した月が含まれていない場合は、投稿した月をmonthsカラムに加算する
+            if($existFlag == false){
+                \DB::table('categoryMonths')
+                    ->where("point_id", $point_id)
+                    ->where("category", $data["category1"])
+                    ->increment('months', $data["month"]);
+            }
+        }else{
+            \DB::table('categoryMonths')->insert([
+                'point_id' => $point_id,
+                'category' => $data["category1"],
+                'months' => $data["month"],
+                'created_at' => date("Y-m-d H:i:s"),
+                'updated_at' => date("Y-m-d H:i:s"),
+            ]);
+        }
+        
+        //category2
+        if(isset($data["category2"])){
+            if(\DB::table("categoryMonths")->where("point_id", $point_id)->where("category", $data["category2"])->exists()){
+                //月判定のロジック
+                
+                //categoryMonthsテーブルの該当レコード → monthカラム取り出し
+                $checkRecord = \DB::table("categoryMonths")->where("point_id", $point_id)->where("category", $data["category2"])->get();
+                $checkRecordMonth = $checkRecord->pluck("months")[0];
+                
+                //controllerの共通メソッド　第一引数：投稿された月　第二引数：categoryMonthsテーブルに既に登録されている月の一覧
+                //$existFlagに、第二引数に第一引数が含まれているかの確認結果を格納
+                $existFlag = $this->getMonths($data["month"], $checkRecordMonth);
+                
+                //monthsカラムに投稿した月が含まれていない場合は、投稿した月をmonthsカラムに加算する
+                if($existFlag == false){
+                    \DB::table('categoryMonths')
+                        ->where("point_id", $point_id)
+                        ->where("category", $data["category2"])
+                        ->increment('months', $data["month"]);
+                }
+            }else{
+                \DB::table('categoryMonths')->insert([
+                    'point_id' => $point_id,
+                    'category' => $data["category2"],
+                    'months' => $data["month"],
+                    'created_at' => date("Y-m-d H:i:s"),
+                    'updated_at' => date("Y-m-d H:i:s"),
+                ]);
+            }
+        }
+            
+        //category3
+        if(isset($data["category3"])){
+            if(\DB::table("categoryMonths")->where("point_id", $point_id)->where("category", $data["category3"])->exists()){
+                //月判定のロジック
+                
+                //categoryMonthsテーブルの該当レコード → monthカラム取り出し
+                $checkRecord = \DB::table("categoryMonths")->where("point_id", $point_id)->where("category", $data["category3"])->get();
+                $checkRecordMonth = $checkRecord->pluck("months")[0];
+                
+                //controllerの共通メソッド　第一引数：投稿された月　第二引数：categoryMonthsテーブルに既に登録されている月の一覧
+                //$existFlagに、第二引数に第一引数が含まれているかの確認結果を格納
+                $existFlag = $this->getMonths($data["month"], $checkRecordMonth);
+                
+                //monthsカラムに投稿した月が含まれていない場合は、投稿した月をmonthsカラムに加算する
+                if($existFlag == false){
+                    \DB::table('categoryMonths')
+                        ->where("point_id", $point_id)
+                        ->where("category", $data["category3"])
+                        ->increment('months', $data["month"]);
+                }
+            }else{
+                \DB::table('categoryMonths')->insert([
+                    'point_id' => $point_id,
+                    'category' => $data["category3"],
+                    'months' => $data["month"],
+                    'created_at' => date("Y-m-d H:i:s"),
+                    'updated_at' => date("Y-m-d H:i:s"),
+                ]);
+            }
+        }
+        
+        return view("posts.post_complete", compact("data"));
     }
 }

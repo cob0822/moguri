@@ -34,8 +34,13 @@ Route::get("ranking", "SearchController@ranking")->name("ranking");
 
 Route::get("post", "PostsController@post")->name("post");
 
-//本来はpostなので、修正する（テスト用にgetにしている）
-Route::get("posting", "PostsController@posting")->name("posting");
+Route::group(["prefix" => "post"], function(){
+    Route::post("confirm", "PostsController@post_confirm")->name("post.confirm");
+    Route::post("complete", "PostsController@post_complete")->name("post.complete");
+});
+
+
+
 
 Route::get("inquiry", "InquiriesController@inquiry")->name("inquiry");
 

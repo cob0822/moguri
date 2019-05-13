@@ -26,28 +26,26 @@
                                     <br>
                                     <br>
                                 </div>
+                                ここに画像を出す
                             </div>
-                                <div class="row">
-                                    <div class="col-3">
-                                        ここに画像を出す
-                                    </div>
-                                </div>
                             <div class="col">
-                                
-                                {{$post->point()->prefecture}}
-                                {{$post->point()->belowPrefecture}}
-                                
-                                
-                                
-                                
-                                
-                                <br>
+                                {{$post->point->prefecture}}
+                                {{$post->point->belowPrefecture}}
                                 <br>
                                 <!--本来はDBからデータ取得はコントローラに記述すべき -->
                                 レビュー： {{$post->review}}
                                 <br>
-                                {{$post->comment}}
+                                カテゴリ：{{$post->category1}}
+                                @if($post->category2)
+                                    ,{{$post->category2}}
+                                @endif
+                                @if($post->category3)
+                                    ,{{$post->category3}}
+                                @endif
+                                &emsp;時期：{{$post->month}}月
                                 <br>
+                                <br>
+                                {{$post->comment}}
                                 <br>
                                 <br>
                                 <br>
@@ -65,12 +63,13 @@
                                   
                             </div>    
                         </div>
-                    <hr>
+                    
                 @endforeach
             @else
                 <hr>
                 <div>過去の投稿がありません。</div>
             @endif
+            <hr>
         </div>
         <aside class="col-4">
             @include("commons.sidemenu")

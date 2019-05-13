@@ -12,16 +12,14 @@
         <div class="col-8">
             <h3>投稿完了</h3>
             
-            <p>住所</p>
+            <p>住所:&emsp;{{$data["prefecture"]}}</p>
             <p>画像</p>
             <p>時期</p>
             <p>カテゴリ</p>
-            <p>レビュー</p>
+            <p>レビュー:&emsp;{{$data["review"]}}</p>
             <p>コメント</p>
             
             <!-- テスト用のボタン-->
-            <a href="/">TOPに戻る</a>
-            {!! link_to_route("detail", "投稿したポイントの詳細を見る") !!}
             
             
         </div>
