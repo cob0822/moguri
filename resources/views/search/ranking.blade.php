@@ -9,7 +9,7 @@
     @endsection
     
     <div class="row">
-        <div class="col-8">
+        <div class="col-12 col-md-8">
             <h3>人気のポイントランキング</h3>
 
             @foreach($points as $point)
@@ -50,8 +50,9 @@
                 </div>
             @endforeach
             <hr>
+            {{$points->render('pagination::bootstrap-4')}}
         </div>
-        <aside class="col-4">
+        <aside class="col-md-4">
             @include("commons.sidemenu")
         </aside>
     </div>

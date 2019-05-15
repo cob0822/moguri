@@ -10,7 +10,7 @@ use App\Review;
 class UsersController extends Controller
 {
     public function mypost(){
-        $posts = Review::where("user_id", \Auth::id())->get();
+        $posts = Review::where("user_id", \Auth::id())->paginate(10);
         
         return view("mypages.posted", [
             "posts" => $posts,    
@@ -37,6 +37,12 @@ class UsersController extends Controller
         ]);
         
         $user = User::find($id);
+        
+        
+        
+        
+        //$file = $request->file("file");
+        //$path = Storage::disk("s3")->putFile("/", $file, "public");
         
         return view("mypages.user_update_complete", [
             "user" => $user,

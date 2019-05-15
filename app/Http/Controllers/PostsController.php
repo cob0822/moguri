@@ -60,6 +60,13 @@ class PostsController extends Controller
         $comment = $request->comment;
         $area = $this->getArea($prefecture);
         
+        //prefectureが北海道か沖縄の場合は、Controller.phpの地域表に存在していないので、地域を代入する
+        if($prefecture == "北海道"){
+            $area = "北海道";
+        }elseif($prefecture == "沖縄県"){
+            $area = "沖縄県";
+        }
+        
         //ジオコーディングメソッドの実行
         $lmg = $this->getLatLng("AIzaSyATubpo-Sq-u-uWRaIZn7gv84_lwCNzRK8", $prefecture.$belowPrefecture);
         
@@ -232,7 +239,15 @@ class PostsController extends Controller
                 ]);
             }
         }
-        
         return view("posts.post_complete", compact("data"));
+    }
+    
+    public function post_modify(Request $request, $id){
+        $review = $request->review;
+        $comment = $request->comment;    
+        
+        \DB::table("reviews")->where("id", $id)->update(["review" => $review, "comment" => $comment]);
+        
+        return back();
     }
 }

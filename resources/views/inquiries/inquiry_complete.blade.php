@@ -10,7 +10,7 @@
     @endsection
     
     <div class="row">
-        <div class="col-8">
+        <div class="col-12 col-md-8">
             <h3>お問い合わせ完了</h3>
             
             <h4>お問い合わせ内容</h4>
@@ -19,7 +19,7 @@
             <!-- テスト用 -->
             <a href="/">TOPに戻る</a>
         </div>
-        <aside class="col-4">
+        <aside class="col-md-4">
             @include("commons.sidemenu")
         </aside>
     </div>

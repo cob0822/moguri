@@ -9,7 +9,7 @@
     @endsection
     
     <div class="row">
-        <div class="col-8">
+        <div class="col-12 col-md-8">
             <h3>MYページ - お気に入りポイント</h3>
             
             @if(isset($favorites[0]))
@@ -47,9 +47,9 @@
                 <hr>
                 <div>該当するポイントが見つかりませんでした。</div>
             @endif
-
+        {{$favorites->render('pagination::bootstrap-4')}}
         </div>
-        <aside class="col-4">
+        <aside class="col-md-4">
             @include("commons.sidemenu")
         </aside>
     </div>

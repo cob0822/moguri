@@ -9,23 +9,23 @@
     @endsection
     
     <div class="row">
-        <div class="col-8">
+        <div class="col-12 col-md-8">
             <h3 class="pb-3">投稿</h3>
             
-            <h6><strong>地名や郵便番号から住所を検索　※任意</strong></h6>
+            <span><strong>地名や郵便番号から住所を検索　※任意</strong></span>
+            <!--ツールチップ-->
+            <span class="cp_tooltip">&emsp;<i class="far fa-question-circle"></i><span class="cp_tooltiptext">地名、郵便番号のいずれかを入力すると、住所を自動入力できます。</span></span>
             
-            <!-- ここはツールチップにしたい-->
-            <p>※地名、郵便番号のいずれかから住所を自動入力できます。（ツールチップにする）</p>
             
             {!! Form::open(["route" => "post.confirm"]) !!}
-            
+            <br>
                 <div class="form-group">
-                    {!! Form::label("pointname", "地名から住所を検索　※任意") !!}
+                    &emsp;{!! Form::label("pointname", "地名から住所を検索　※任意") !!}
                     {!! Form::text("pointname", old("pointname"), ["form-control"]) !!}
                 </div>
                 
                 <div class="form-group">
-                    {!! Form::label("address", "郵便番号　※任意") !!}
+                    &emsp;{!! Form::label("address", "郵便番号　※任意") !!}
                     <!-- ▼郵便番号入力フィールド(3桁+4桁) -->
                     <input type="text" name="zip31" size="4" maxlength="3"> － <input type="text" name="zip32" size="5" maxlength="4" onKeyUp="AjaxZip3.zip2addr('zip31','zip32','pref31','addr31','addr31');">
                     <!-- {!! Form::text("address", old("address"), ["form-controll"]) !!} -->
@@ -34,9 +34,9 @@
                 <div class="form-group">
                     <strong>{!! Form::label("address", "住所　※必須") !!}</strong><br>
                         <!-- ▼住所入力フィールド(都道府県) -->
-                        <p>都道府県：<input type="text" name="pref31" size="10"></p>
+                        <p>&emsp;都道府県：<input type="text" name="pref31" size="10"></p>
                         <!-- ▼住所入力フィールド(都道府県以降の住所) -->
-                        <p>以降の住所：<input type="text" name="addr31" size="50"></p>
+                        <p>&emsp;以降の住所：<input type="text" name="addr31" size="50"></p>
                     <!-- {!! Form::text("address", old("address"), ["form-controll"]) !!} -->
                 </div>
     
@@ -66,10 +66,15 @@
                     </div>
                 </div>
                 
-                <p><strong>カテゴリ(何を見ましたか?)　※1つ以上必須、3つまで</strong></p>
+                <span><strong>カテゴリ(何を見ましたか?)　※1つ以上必須、3つまで</strong></span>
                 
-                <!--ここもツールチップにする -->
-                <p>カテゴリ名の重複を避けるため、登録したいカテゴリがプルダウン(入力時の予想検索)に存在する場合は、その名称で登録をお願いいたします。</p>
+                <!--ツールチップ-->
+                <span class="cp_tooltip">&emsp;<i class="far fa-question-circle"></i><span class="cp_tooltiptext">カテゴリ名の重複を避けるため、登録したいカテゴリが<br>プルダウン(入力時の予想検索)に存在する場合は、<br>その名称で登録をお願いいたします。</span></span>
+                
+                
+                <!-- ここのbrが効かない -->
+                <br>
+                
                 
                 <div class="row">
                     <div class="col-3">カテゴリ1　※必須</div>
@@ -128,6 +133,8 @@
                     <option value="1">☆</option>
                 </select>
                 
+                <!--ここもなぜか改行が効かない -->
+                <br>
                 <div class="form-group">
                     <strong>{!! Form::label("comment", "コメント　※必須") !!}</strong><br>
                     {!! Form::textarea("comment", old("comment"), ["form-control"]) !!}
@@ -138,7 +145,7 @@
             {!! Form::close() !!}
             
         </div>
-        <aside class="col-4">
+        <aside class="col-md-4">
             @include("commons.sidemenu")
         </aside>
     </div>

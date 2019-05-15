@@ -13,7 +13,7 @@
 
 Route::get('/', function () {
     return view('top');
-});
+})->name("top");
 
 //ユーザー登録
 Route::get("signup", "Auth\RegisterController@showRegistrationForm")->name("signup.get");
@@ -47,8 +47,6 @@ Route::get("inquiry", "InquiriesController@inquiry")->name("inquiry");
 //本来はpostなので、修正する（テスト用にgetにしている）
 Route::get("querying", "InquiriesController@querying")->name("querying");
 
-Route::get("mypost", "UsersController@mypost")->name("mypost");
-
     Route::group(["prefix" => "{id}"], function(){
         Route::post("favorite", "UsersController@favorite")->name("favorite");
         Route::delete("unfavorite", "UsersController@unfavorite")->name("unfavorite");
@@ -65,6 +63,10 @@ Route::group(["prefix" => "search/{id}/{category}"], function(){
 Route::group(["prefix" => "ranking/{id}"], function(){
     Route::get("detail", "SearchController@ranking_to_detail")->name("ranking_to_detail");
 });
+
+//ログイン後のprefixに入れるべきだが、入れると何故かエラーになる
+Route::get("mypost", "UsersController@mypost")->name("mypost");
+Route::post("mypost/modify/{id}", "PostsController@post_modify")->name("post.modify");
 
 Route::group(["middleware" => ["auth"]], function(){
     Route::group(["prefix" => "users/{id}"], function(){

@@ -9,7 +9,7 @@
     @endsection
 
     <div class="row">
-        <div class="col-8">
+        <div class="col-12 col-md-8">
             <h3>投稿確認</h3>
             <br>
             <p>住所:&emsp;{{$prefecture}}{{$belowPrefecture}}</p>
@@ -63,7 +63,7 @@
             </div>
             
         </div>
-        <aside class="col-4">
+        <aside class="col-md-4">
             @include("commons.sidemenu")
         </aside>
     </div>

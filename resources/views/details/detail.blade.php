@@ -9,7 +9,7 @@
     @endsection
     
     <div class="row">
-        <div class="col-8">
+        <div class="col-12 col-md-8">
             @if($category != "none")
                 <h3><strong>{{$category}}</strong>が見られるポイント</h3>
             @else
@@ -86,7 +86,7 @@
             
 
         </div>
-        <aside class="col-4">
+        <aside class="col-md-4">
             @include("commons.sidemenu")
         </aside>
     </div>

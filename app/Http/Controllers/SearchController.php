@@ -7,82 +7,6 @@ use App\Point;
 
 class SearchController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function index()
-    {
-        //
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
-    {
-        //
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
-    {
-        //
-    }
-    
     public function search(){
         //categoryMonthsに存在する全てのカテゴリを取得してcategoriesに代入
         $categories = \DB::table("categoryMonths")->distinct()->select('category')->get();
@@ -124,7 +48,6 @@ class SearchController extends Controller
         }
         
         //レビューの平均値を返す 今回はsearch_complete Viewにベタ書き
-        
         return view("search.search_complete", [
             "points" => $points,
             "category" => $category,
@@ -170,7 +93,7 @@ class SearchController extends Controller
     
     
     public function ranking(){
-        $points = Point::all();
+        $points = Point::paginate(10);
         $ranking = array();
         
         foreach($points as $point){
