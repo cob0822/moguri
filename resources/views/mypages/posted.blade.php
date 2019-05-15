@@ -32,8 +32,9 @@
                                 {{$post->point->prefecture}}
                                 {{$post->point->belowPrefecture}}
                                 <br>
-                                <!--本来はDBからデータ取得はコントローラに記述すべき -->
-                                レビュー： {{$post->review}}
+                                <!--レビューの星取得 -->
+                                @include("commons.star", ["rate" => $post->review])
+                                
                                 <br>
                                 カテゴリ：{{$post->category1}}
                                 @if($post->category2)
@@ -52,10 +53,10 @@
                                 <div class="row">
                                     <div class="col-4 col-md-2">
                                         <!-- モーダルの表示 -->
-                                        <button type="button" class="btn btn-warning" data-toggle="modal" data-target="#exampleModal">
+                                        <button type="button" class="btn btn-warning" data-toggle="modal" data-target="#exampleModal{{$post->id}}">
                                             編集
                                         </button>
-                                        <div class="modal" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                        <div class="modal" id="exampleModal{{$post->id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
                                             <div class="modal-dialog" role="document">
                                                 <div class="modal-content">
                                                     <div class="modal-header">

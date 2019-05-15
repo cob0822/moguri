@@ -136,7 +136,7 @@
                 <!--ここもなぜか改行が効かない -->
                 <br>
                 <div class="form-group">
-                    <strong>{!! Form::label("comment", "コメント　※必須") !!}</strong><br>
+                    <strong>{!! Form::label("comment", "コメント(300文字まで)　※必須") !!}</strong><br>
                     {!! Form::textarea("comment", old("comment"), ["form-control"]) !!}
                 </div>
                 

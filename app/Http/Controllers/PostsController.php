@@ -48,6 +48,17 @@ class PostsController extends Controller
     }
     
     public function post_confirm(Request $request){
+        
+        $this->validate($request, [
+           "pref31" => "required",
+           "addr31" => "required",
+           "month" => "required",
+           "category1" => "required",
+           "review" => "required",
+           "comment" => "required|max:300",
+        ]);
+        
+        
         $prefecture = $request->pref31;
         $belowPrefecture = $request->addr31;
         $month = (int)$request->month;
@@ -243,10 +254,22 @@ class PostsController extends Controller
     }
     
     public function post_modify(Request $request, $id){
+        $this->validate($request, [
+           "review" => "required_without:comment",
+           "comment" => "required_without:review",
+        ]);
+        
         $review = $request->review;
         $comment = $request->comment;    
         
-        \DB::table("reviews")->where("id", $id)->update(["review" => $review, "comment" => $comment]);
+        if(isset($review) and isset($comment)){
+            \DB::table("reviews")->where("id", $id)->update(["review" => $review, "comment" => $comment]);    
+        }elseif(isset($review)){
+            \DB::table("reviews")->where("id", $id)->update(["review" => $review]);
+        }elseif(isset($comment)){
+            \DB::table("reviews")->where("id", $id)->update(["comment" => $comment]);
+        }
+        
         
         return back();
     }

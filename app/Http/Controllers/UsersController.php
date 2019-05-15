@@ -26,20 +26,45 @@ class UsersController extends Controller
     }
     
     public function changeInformation(Request $request, $id){
-            $this->validate($request, [
-               "name" => "required|string|min:4|max:12",
-               "email" => "required|string|email|max:255|unique:users",
+            $name = $request->name;
+            $email = $request->email;
+            
+            if(empty($email) and empty($name)){
+                $this->validate($request, [
+                   "name" => "required_without:email",
+                   "email" => "required_without:name",
+                ]);
+            }elseif(empty($email)){
+                $this->validate($request, [
+                   "name" => "required|string|min:4|max:12",
+                ]);
+            }elseif(empty($name)){
+                $this->validate($request, [
+                   "email" => "required|string|email|max:255|unique:users",
+                ]);
+            }else{
+                $this->validate($request, [
+                    "name" => "required|string|min:4|max:12",
+                    "email" => "required|string|email|max:255|unique:users",
+                ]);
+            }
+            
+        if(isset($name) and isset($email)){
+            \DB::table("users")->where("id", $id)->update([
+                "name" => $request->name,
+                "email" => $request->email,
             ]);
-
-        \DB::table("users")->where("id", $id)->update([
-            "name" => $request->name,
-            "email" => $request->email,
-        ]);
+        }elseif(isset($name)){
+            \DB::table("users")->where("id", $id)->update([
+                "name" => $request->name,
+            ]);
+        }elseif(isset($email)){
+            \DB::table("users")->where("id", $id)->update([
+                "email" => $request->email,
+            ]);
+        }
         
         $user = User::find($id);
-        
-        
-        
         
         //$file = $request->file("file");
         //$path = Storage::disk("s3")->putFile("/", $file, "public");
@@ -66,10 +91,19 @@ class UsersController extends Controller
         $user = User::find($id);
         $favorites = $user->favoritesPoint()->paginate(10);
         
+        $rateAvg = [];
+        
+        //ポイントごとのレートの平均値を　"ポイントID" => "レート平均値"　の連想配列で取得
+        foreach($favorites as $favorite){
+            $rate = \DB::table("reviews")->where("point_id", $favorite->id)->avg("review");
+            $rateAvg += array($favorite->id => $rate);
+        }
+        
         //$data += $this->counts($user);
         
         return view("mypages.favorites", [
             "favorites" => $favorites,    
+            "rateAvg" => $rateAvg,
         ]);
     }
 }

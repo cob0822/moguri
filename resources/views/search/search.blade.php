@@ -7,7 +7,7 @@
             
         </div>
     @endsection
-    
+        
     <div class="row">
         <div class="col-12 col-md-8">
             <h3>ポイントの検索</h3>
@@ -16,8 +16,12 @@
             
                 <div class="row pt-4">
                     <div class="col-md-4">
-                        <p>何が見たいですか? (必須)</p>
+                        <span>カテゴリ (必須)</span>
+                        <!-- ツールチップ -->
+                        <span class="cp_tooltip">&emsp;<i class="far fa-question-circle"></i><span class="cp_tooltiptext">何が見たいですか?</span></span>
                         
+                        <!--brが効かないので、pタグで改行している -->
+                        <p></p>
                         <input type="text" name="category" list="category" placeholder="入力 or 選択">
                           <datalist id="category">
                               

@@ -17,6 +17,10 @@ class SearchController extends Controller
     }
     
     public function searching(Request $request){
+        $this->validate($request, [
+           "category" => "required",
+        ]);
+        
         $category = $request->category;
         $area = $request->area;
         //search.blade.phpのoption valueはint型で渡せないので、int型に変換
@@ -47,10 +51,18 @@ class SearchController extends Controller
             $points = \DB::table("points")->join("categoryMonths", "points.id", "=", "categoryMonths.point_id")->where("category",$request->category)->get();
         }
         
-        //レビューの平均値を返す 今回はsearch_complete Viewにベタ書き
+        //ポイントごとのレートの平均値を　"ポイントID" => "レート平均値"　の連想配列で取得
+        $rateAvg = [];
+        
+        foreach($points as $point){
+            $rate = \DB::table("reviews")->where("point_id", $point->point_id)->avg("review");
+            $rateAvg += array($point->point_id => $rate);
+        }
+
         return view("search.search_complete", [
             "points" => $points,
             "category" => $category,
+            "rateAvg" => $rateAvg,
         ]);
     }
     
@@ -59,9 +71,13 @@ class SearchController extends Controller
         
         //$categories = \DB::table("points")->join("categoryMonths", "points.id", "=", "categoryMonths.point_id")->groupBy("category")->get();
         
+        //ポイントのレートの平均値を取得
+            $rateAvg = \DB::table("reviews")->where("point_id", $point->id)->avg("review");
+            
         return view("details.detail", [
             "point" => $point,
             "category" => $category,
+            "rateAvg" => $rateAvg,
             //"categories" => $categories,
         ]);
     }
@@ -71,21 +87,29 @@ class SearchController extends Controller
         
         //$categories = \DB::table("points")->join("categoryMonths", "points.id", "=", "categoryMonths.point_id")->groupBy("category")->get();
         
+        //ポイントのレートの平均値を取得
+            $rateAvg = \DB::table("reviews")->where("point_id", $point->id)->avg("review");
+            
         return view("details.detail", [
             "point" => $point,
             "category" => "none",
+            "rateAvg" => $rateAvg,
             //"categories" => $categories,
         ]);
     }
     
     public function favorites_to_detail($id){
         $point = Point::find($id);
-        
+
         //$categories = \DB::table("points")->join("categoryMonths", "points.id", "=", "categoryMonths.point_id")->groupBy("category")->get();
         
+        //ポイントのレートの平均値を取得
+            $rateAvg = \DB::table("reviews")->where("point_id", $point->id)->avg("review");
+
         return view("details.detail", [
             "point" => $point,
             "category" => "none",
+            "rateAvg" => $rateAvg,
             //"categories" => $categories,
         ]);
     }
@@ -96,6 +120,14 @@ class SearchController extends Controller
         $points = Point::paginate(10);
         $ranking = array();
         
+        $rateAvg = [];
+        
+        foreach($points as $point){
+            $rate = \DB::table("reviews")->where("point_id", $point->id)->avg("review");
+            $rateAvg += array($point->id => $rate);
+        }
+        
+        //下書き
         foreach($points as $point){
             $rate = $point->reviews()->avg("review");
         }
@@ -108,7 +140,8 @@ class SearchController extends Controller
         
         
         return view("search.ranking", [
-            "points" => $points,    
+            "points" => $points,  
+            "rateAvg" => $rateAvg,
         ]);
     }
 }

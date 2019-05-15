@@ -35,9 +35,14 @@
                         <br>
                         <br>
                         <!--本来はDBからデータ取得はコントローラに記述すべき -->
-                        レビュー： {{\DB::table("reviews")->where("point_id", $point->id)->avg("review")}}
-                        <span class="ml-2">{{\DB::table("reviews")->where("point_id", $point->id)->count("review")}}件の投稿</span>
-                        
+                        <div class="row">
+                            <div class="col-5 col-md-3">
+                                @include("commons.star", ["rate" => $rateAvg])
+                            </div>
+                            <div class="col">
+                            <span class="ml-2">{{\DB::table("reviews")->where("point_id", $point->id)->count("review")}}件の投稿</span>
+                            </div>
+                        </div>
                         <br>
                         <br>
                         <br>
@@ -71,8 +76,7 @@
                     </div>
                     <div class="col">
                         <div>{{$review->user->name}}</div>
-                        <span>{{$review->review}}</span>
-                        
+                        @include("commons.star", ["rate" => $review->review])
                         
                         <!--カテゴリ２と３がない場合,を表示しないように修正する -->
                         <div align="right">カテゴリ：{{$review->category1}},{{$review->category2}},{{$review->category3}}&emsp;時期：{{$review->month}}</div>

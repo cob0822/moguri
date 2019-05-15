@@ -32,10 +32,15 @@
                             {{$point->prefecture}}
                             {{$point->belowPrefecture}}
                             <br>
-                            <br>
                             <!--本来はDBからデータ取得はコントローラに記述すべき -->
-                            レビュー： {{\DB::table("reviews")->where("point_id", $point->point_id)->avg("review")}}
-                            <span class="ml-2">{{\DB::table("reviews")->where("point_id", $point->point_id)->count("review")}}件の投稿</span>
+                            <div class="row">
+                                <div class="col-5 col-md-3">
+                                @include("commons.star", ["rate" => $rateAvg[$point->point_id]])
+                                </div>
+                                <div class="col">
+                                <span class="ml-2">{{\DB::table("reviews")->where("point_id", $point->point_id)->count("review")}}件の投稿</span>
+                                </div>
+                            </div>
                             <br>
                             <br>
                             <br>
