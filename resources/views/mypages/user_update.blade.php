@@ -12,7 +12,8 @@
         <div class="col-12 col-md-8">
             <h3 class="mb-5">MYページ - ユーザー情報編集</h3>
             
-            {!! Form::open(["route" => ["changeInformation", $user->id]]) !!}
+            {!! Form::open(["route" => ["changeInformation", $user->id], "enctype" => "multipart/form-data"]) !!}
+            
             
                 <p>現在登録しているユーザー名 : <strong>{{$user->name}}</strong></p>
                 
@@ -27,12 +28,14 @@
                     {!! Form::label("email", "変更後のメールアドレス : ") !!}
                     {!! Form::email("email", old("email"), ["form-control"]) !!}
                 </div>
-                <!--
+                
+                
                 <div class="mt-4">
                     {!! Form::label("icon", "アイコンの登録", ['class' => 'control-label']) !!}
                     <span>：&emsp;</span>
                     {!! Form::file("icon") !!}
-                </div>-->
+                </div>
+                
                 
                 <br>
             

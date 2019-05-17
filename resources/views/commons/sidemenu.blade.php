@@ -10,9 +10,9 @@
 		@endif
 	<li>{!! link_to_route("post", "ポイントを投稿する") !!}</li>
 	<li>{!! link_to_route("search", "ポイントを探す") !!}</li>
-	<li>{!! link_to_route("search", "クジラが見たい") !!}</li>
-	<li>{!! link_to_route("search", "沈没船が見たい") !!}</li>
-	<li>{!! link_to_route("search", "海底遺跡が見たい") !!}</li>
-	<li>{!! link_to_route("search", "洞窟を探検したい") !!}</li>
+	<li>{!! link_to_route("search.this", "クジラが見たい", ["init" => "クジラ"]) !!}</li>
+	<li>{!! link_to_route("search.this", "沈没船が見たい", ["init" => "沈没船"]) !!}</li>
+	<li>{!! link_to_route("search.this", "海底遺跡が見たい", ["init" => "海底遺跡"]) !!}</li>
+	<li>{!! link_to_route("search.this", "洞窟を探検したい", ["init" => "洞窟"]) !!}</li>
 	<li>{!! link_to_route("inquiry", "お問い合わせ") !!}</li>
 </ul>

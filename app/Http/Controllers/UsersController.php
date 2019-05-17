@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 
 use App\User;
 use App\Review;
+use Storage;
 
 class UsersController extends Controller
 {
@@ -66,8 +67,18 @@ class UsersController extends Controller
         
         $user = User::find($id);
         
-        //$file = $request->file("file");
-        //$path = Storage::disk("s3")->putFile("/", $file, "public");
+        $file = $request->file("icon");
+        $path = Storage::disk("s3")->putFile("/", $file, "public");
+        
+        $url = Storage::disk('s3')->url($path);
+        return redirect()->back()->with('s3url', $url);
+        
+        //$filename = $request->file("icon")->getClientOriginalName();
+        //$path = $request->file('icon')->storeAs('public', $filename);
+        //return back()->with('filename' => $filename);
+        
+        
+        
         
         return view("mypages.user_update_complete", [
             "user" => $user,

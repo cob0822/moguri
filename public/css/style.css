@@ -168,3 +168,8 @@ div.content {
 .star-rating-back {
   color: #ccc;
 }
+
+.link_button{
+	text-decoration: none;
+	color:#000000;
+}

@@ -26,6 +26,7 @@ Route::post("login", "Auth\LoginController@login")->name("login.post");
 Route::get("logout", "Auth\LoginController@logout")->name("logout.get");
 
 Route::get("search", "SearchController@search")->name("search");
+Route::get("search/{init}", "SearchController@searchThis")->name("search.this");
 
 //Getにしてパラメートを渡す書き方にすべき。質問の参考リンクを元に、後で直す
 Route::post("searching", "SearchController@searching")->name("searching");
@@ -34,6 +35,13 @@ Route::get("ranking", "SearchController@ranking")->name("ranking");
 
 Route::get("post", "PostsController@post")->name("post");
 
+
+
+Route::get("post/{prefecture}/{belowPrefecture}", "PostsController@postThere")->name("post.there");
+
+
+
+
 Route::group(["prefix" => "post"], function(){
     Route::post("confirm", "PostsController@post_confirm")->name("post.confirm");
     Route::post("complete", "PostsController@post_complete")->name("post.complete");
@@ -41,11 +49,9 @@ Route::group(["prefix" => "post"], function(){
 
 
 
-
+//お問い合わせ
 Route::get("inquiry", "InquiriesController@inquiry")->name("inquiry");
-
-//本来はpostなので、修正する（テスト用にgetにしている）
-Route::get("querying", "InquiriesController@querying")->name("querying");
+Route::post("querying", "InquiriesController@querying")->name("querying");
 
     Route::group(["prefix" => "{id}"], function(){
         Route::post("favorite", "UsersController@favorite")->name("favorite");
@@ -80,3 +86,7 @@ Route::group(["middleware" => ["auth"]], function(){
         Route::get("detail", "SearchController@favorites_to_detail")->name("favorites_to_detail");
     });
 });
+
+//ファイルアップロード
+Route::get('upload', 'UploadController@create');
+Route::post('upload', 'UploadController@store');

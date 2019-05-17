@@ -3,90 +3,46 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Inquiry;
+use App\User;
+use App\Mail\InquirySent;
+use Illuminate\Support\Facades\Mail;
 
 class InquiriesController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function index()
-    {
-        //
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
-    {
-        //
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
-    {
-        //
-    }
-    
     public function inquiry(){
         return view("inquiries.inquiry");
     }
     
-    public function querying(){
-        return view("inquiries.inquiry_complete");
+    public function querying(Request $request){
+        
+        if(\Auth::check()){
+            $this->validate($request, [
+                "inquiry" => "required|max:300",
+            ]);
+        }else{
+            $this->validate($request, [
+                "email" => "required|email",
+                "inquiry" => "required|max:300",
+            ]);
+        }
+        if(\Auth::check()){
+            $inquiry = new Inquiry([
+                "name" => User::find(\Auth::id())->name,
+                "email" => User::find(\Auth::id())->email,
+                "inquiry" => $request->inquiry,
+            ]);
+        }else{
+            $inquiry = new Inquiry([
+                "name" => "guest",
+                "email" => $request->email,
+                "inquiry" => $request->inquiry,
+            ]);
+        }
+        
+        $to = 'portfolio.moguri@gmail.com';
+        Mail::to($to)->send(new InquirySent($inquiry));
+
+        return view("inquiries.inquiry_complete", compact("inquiry"));
     }
 }

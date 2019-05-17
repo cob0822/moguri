@@ -167,7 +167,7 @@ class Controller extends BaseController
           0b000100000000 => "9月", //256
           0b001000000000 => "10月", //512
           0b010000000000 => "11月", //1024
-          0b100000000000 => "12月", //2028
+          0b100000000000 => "12月", //2048
         ];
 
         $postedMonthLabel;
@@ -197,5 +197,46 @@ class Controller extends BaseController
         }
         
         return $existFlag;
+    }
+    
+    public function getMonth($bitMonth){
+        switch($bitMonth){
+            case 1:
+                return 1;
+                break;
+            case 2:
+                return 2;
+                break;
+            case 4:
+                return 3;
+                break;
+            case 8:
+                return 4;
+                break;
+            case 16:
+                return 5;
+                break;
+            case 32:
+                return 6;
+                break;
+            case 64:
+                return 7;
+                break;
+            case 128:
+                return 8;
+                break;
+            case 256:
+                return 9;
+                break;
+            case 512:
+                return 10;
+                break;
+            case 1024:
+                return 11;
+                break;
+            case 2048:
+                return 12;
+                break;
+        }
     }
 }

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Point;
+use App\Review;
 
 class SearchController extends Controller
 {
@@ -12,7 +13,17 @@ class SearchController extends Controller
         $categories = \DB::table("categoryMonths")->distinct()->select('category')->get();
         
         return view("search.search", [
-            "categories" => $categories,    
+            "categories" => $categories,   
+        ]);
+    }
+    
+    public function searchThis($init){
+        //categoryMonthsに存在する全てのカテゴリを取得してcategoriesに代入
+        $categories = \DB::table("categoryMonths")->distinct()->select('category')->get();
+        
+        return view("search.search", [
+            "categories" => $categories,   
+            "init" => $init,
         ]);
     }
     
@@ -68,6 +79,12 @@ class SearchController extends Controller
     
     public function detail($id, $category){
         $point = Point::find($id);
+        $month = [];
+        $reviews = Review::where("point_id", $id)->paginate(10);
+        
+        foreach($point->reviews as $review){
+            $month += array($review->id => $this->getMonth($review->month));
+        }
         
         //$categories = \DB::table("points")->join("categoryMonths", "points.id", "=", "categoryMonths.point_id")->groupBy("category")->get();
         
@@ -78,12 +95,20 @@ class SearchController extends Controller
             "point" => $point,
             "category" => $category,
             "rateAvg" => $rateAvg,
+            "month" => $month,
+            "reviews" => $reviews,
             //"categories" => $categories,
         ]);
     }
     
     public function ranking_to_detail($id){
         $point = Point::find($id);
+        $month = [];
+        $reviews = Review::where("point_id", $id)->paginate(10);
+
+        foreach($point->reviews as $review){
+            $month += array($review->id => $this->getMonth($review->month));
+        }
         
         //$categories = \DB::table("points")->join("categoryMonths", "points.id", "=", "categoryMonths.point_id")->groupBy("category")->get();
         
@@ -94,13 +119,21 @@ class SearchController extends Controller
             "point" => $point,
             "category" => "none",
             "rateAvg" => $rateAvg,
+            "month" => $month,
+            "reviews" => $reviews,
             //"categories" => $categories,
         ]);
     }
     
     public function favorites_to_detail($id){
         $point = Point::find($id);
-
+        $month = [];
+        $reviews = Review::where("point_id", $id)->paginate(10);
+        
+        foreach($point->reviews as $review){
+            $month += array($review->id => $this->getMonth($review->month));
+        }
+        
         //$categories = \DB::table("points")->join("categoryMonths", "points.id", "=", "categoryMonths.point_id")->groupBy("category")->get();
         
         //ポイントのレートの平均値を取得
@@ -110,6 +143,8 @@ class SearchController extends Controller
             "point" => $point,
             "category" => "none",
             "rateAvg" => $rateAvg,
+            "month" => $month,
+            "reviews" => $reviews,
             //"categories" => $categories,
         ]);
     }

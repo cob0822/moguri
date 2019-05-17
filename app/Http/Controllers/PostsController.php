@@ -15,6 +15,17 @@ class PostsController extends Controller
         ]);
     }
     
+    public function postThere($prefecture, $belowPrefecture){
+        //categoryMonthsに存在する全てのカテゴリを取得してcategoriesに代入
+        $categories = \DB::table("categoryMonths")->distinct()->select('category')->get();
+        
+        return view("posts.post", [
+            "categories" => $categories,   
+            "prefecture" => $prefecture,
+            "belowPrefecture" => $belowPrefecture,
+        ]);
+    }
+    
     //ジオコーディングAPIの呼び出し(緯度経度の取得)
     public function getLatLng($googlemap_api,$strAddress = null)
     {
@@ -49,6 +60,7 @@ class PostsController extends Controller
     
     public function post_confirm(Request $request){
         
+        if($request->pref31)
         $this->validate($request, [
            "pref31" => "required",
            "addr31" => "required",
@@ -58,6 +70,11 @@ class PostsController extends Controller
            "comment" => "required|max:300",
         ]);
         
+        /*
+        if(mb_substr("$request->pref31", -1) != "都" and mb_substr("$request->pref31", -1) != "道" and mb_substr("$request->pref31", -1) != "府" and mb_substr("$request->pref31", -1) != "県"){
+            
+        }
+        */
         
         $prefecture = $request->pref31;
         $belowPrefecture = $request->addr31;

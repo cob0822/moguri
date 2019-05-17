@@ -32,12 +32,25 @@
                 </div>
                 
                 <div class="form-group">
-                    <strong>{!! Form::label("address", "住所　※必須") !!}</strong><br>
-                        <!-- ▼住所入力フィールド(都道府県) -->
-                        <p>&emsp;都道府県：<input type="text" name="pref31" size="10"></p>
-                        <!-- ▼住所入力フィールド(都道府県以降の住所) -->
-                        <p>&emsp;以降の住所：<input type="text" name="addr31" size="50"></p>
-                    <!-- {!! Form::text("address", old("address"), ["form-controll"]) !!} -->
+                    <strong>{!! Form::label("address", "住所　※必須") !!}</strong>
+                    <!--ツールチップ-->
+                    <span class="cp_tooltip">&emsp;<i class="far fa-question-circle"></i><span class="cp_tooltiptext">都道府県名は"県"や"都"まで入力してください。</span></span><br>
+                        
+                        <!--詳細画面からの遷移で、住所情報をすでに持っている場合-->
+                        @if(isset($prefecture) and isset($belowPrefecture))
+                            <!-- ▼住所入力フィールド(都道府県) -->
+                            <p>&emsp;都道府県：<input type="text" name="pref31" size="10" value="<?=$prefecture?>"></p>
+                            <!-- ▼住所入力フィールド(都道府県以降の住所) -->
+                            <p>&emsp;以降の住所：<input type="text" name="addr31" size="50" value="<?=$belowPrefecture?>"></p>
+                            <!-- {!! Form::text("address", old("address"), ["form-controll"]) !!} -->
+                        <!--サイドバーからの遷移等、住所情報を持っていない場合-->
+                        @else
+                            <!-- ▼住所入力フィールド(都道府県) -->
+                            <p>&emsp;都道府県：<input type="text" name="pref31" size="10"></p>
+                            <!-- ▼住所入力フィールド(都道府県以降の住所) -->
+                            <p>&emsp;以降の住所：<input type="text" name="addr31" size="50"></p>
+                            <!-- {!! Form::text("address", old("address"), ["form-controll"]) !!} -->
+                        @endif
                 </div>
     
                 <p><strong>画像のアップロード　※任意、3枚まで</strong></p><br>
@@ -133,8 +146,8 @@
                     <option value="1">☆</option>
                 </select>
                 
-                <!--ここもなぜか改行が効かない -->
-                <br>
+                <!--ここもなぜか改行が効かないのでpタグで改行 -->
+                <br><p></p>
                 <div class="form-group">
                     <strong>{!! Form::label("comment", "コメント(300文字まで)　※必須") !!}</strong><br>
                     {!! Form::textarea("comment", old("comment"), ["form-control"]) !!}
@@ -143,7 +156,7 @@
                 {!! Form::submit("次へ", ["class" => "btn btn-warning"]) !!}
                 
             {!! Form::close() !!}
-            
+            <br>
         </div>
         <aside class="col-md-4">
             @include("commons.sidemenu")

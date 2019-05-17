@@ -33,13 +33,12 @@
                         {{$point->prefecture}}
                         {{$point->belowPrefecture}}
                         <br>
-                        <br>
-                        <!--本来はDBからデータ取得はコントローラに記述すべき -->
                         <div class="row">
                             <div class="col-5 col-md-3">
                                 @include("commons.star", ["rate" => $rateAvg])
                             </div>
                             <div class="col">
+                            <!--本来はDBからデータ取得はコントローラに記述すべき -->
                             <span class="ml-2">{{\DB::table("reviews")->where("point_id", $point->id)->count("review")}}件の投稿</span>
                             </div>
                         </div>
@@ -48,13 +47,16 @@
                         <br>
                         <br>
                         <div class="row">
-                            <div class="col-3">
-                                {!! link_to_route("post", "投稿する", ["class" => "btn btn-warning"]) !!}
+                            <div class="col-4 offset-md-1 col-md-2">
+                                
+                            {!! link_to_route("post.there", "投稿", ["prefecture" => $point->prefecture, "belowPrefecture" => $point->belowPrefecture], ["class" => "btn btn-warning"]) !!}
+
+                                
                             </div>
-                            <div class="col-4">
+                            <div class="col-8 col-md-4">
                                 @include("users.favorite_button")
                             </div>
-                            <div class="col-5">
+                            <div class="col-12 col-md-5">
                                 付近のショップを見る
                             </div>
                         </div>  
@@ -66,7 +68,7 @@
                 <div class="jumbotron">ここに画像一覧を表示する</div>
             <hr>
             
-            @foreach($point->reviews as $review) 
+            @foreach($reviews as $review) 
                 <div class="row">
                     <div class="col-3">
                         <div class="card">
@@ -79,16 +81,23 @@
                         @include("commons.star", ["rate" => $review->review])
                         
                         <!--カテゴリ２と３がない場合,を表示しないように修正する -->
-                        <div align="right">カテゴリ：{{$review->category1}},{{$review->category2}},{{$review->category3}}&emsp;時期：{{$review->month}}</div>
+                        <div align="right">カテゴリ：
+                            {{$review->category1}}
+                                @if($review->category2)
+                                    ,{{$review->category2}}
+                                @endif
+                                @if($review->category3)
+                                    ,{{$review->category3}}
+                                @endif
+                            &emsp;時期：{{$month[$review->id]}}月
+                        </div>
+                        <br>
                         <div>{{$review->comment}}</div>
                     </div>
                 </div>
                 <hr>
             @endforeach
-            
-            
-            
-
+            {{$reviews->render('pagination::bootstrap-4')}}
         </div>
         <aside class="col-md-4">
             @include("commons.sidemenu")

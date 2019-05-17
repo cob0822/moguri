@@ -9,5 +9,7 @@
         {!! Form::close() !!}
     @endif
 @else
-    お気に入りボタン（非活性）
+    <div class="btn btn-primary disabled">
+        お気に入りに追加
+    </div>
 @endif

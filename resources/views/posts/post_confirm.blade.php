@@ -53,7 +53,8 @@
             
             <div class="row">
                 <div class="col-4">
-                    {!! link_to_route("post", "戻る") !!}
+                    <!--セッションで値を保持して戻り画面に初期表示したい -->
+                    {!! link_to_route("post", "戻る", [], ["class" => "btn btn-warning"]) !!}
                 </div>
                 <div class="col">
                     {!! Form::open(["route" => ["post.complete"]]) !!}

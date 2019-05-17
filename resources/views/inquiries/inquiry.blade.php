@@ -11,12 +11,31 @@
     <div class="row">
         <div class="col-12 col-md-8">
             <h3>お問い合わせ</h3>
+            <br>
             
-            <h4>お問い合わせ内容</h4>
+            {!! Form::open(["route" => "querying"]) !!}
             
+            @if(\Auth::check())
+                <div class="form-group">
+                    {!! Form::label("inquiry", "お問い合わせ内容(300文字以内)") !!}
+                    <br>
+                    {!! Form::textarea("inquiry", old("inquiry"), ["form-control"]) !!}
+                </div>
+            @else
+                <div class="form-group">
+                    {!! Form::label("email", "メールアドレス") !!}
+                    <br>
+                    {!! Form::email("email", old("email"), ["form-control"]) !!}
+                </div>
+                <div class="form-group">
+                    {!! Form::label("inquiry", "お問い合わせ内容(300文字以内)") !!}
+                    <br>
+                    {!! Form::textarea("inquiry", old("inquiry"), ["form-control"]) !!}
+                </div>
+            @endif
             
-            <!-- テスト用 -->
-            {!! link_to_route("querying", "上記の内容で問い合わせる（仮）") !!}
+            {!! Form::submit("上記の内容で問い合わせる", ["class" => "btn btn-warning"]) !!}
+
         </div>
         <aside class="col-md-4">
             @include("commons.sidemenu")

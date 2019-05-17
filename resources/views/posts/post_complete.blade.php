@@ -50,22 +50,14 @@
             </p>
             <p>レビュー:&emsp;{{$data["review"]}}</p>
             <p>コメント:&emsp;{{$data["comment"]}}</p>
-            
             <br>
-            <div class="row">
-                <div class="col-2">
-                    {!! link_to_route("post", "投稿TOPへ") !!}
-                </div>
-                <div class="col-2">
-                    {!! link_to_route("top", "TOPへ") !!}
-                </div>
-                @if(\Auth::check())
-                    <div class="col">
-                        {!! link_to_route("mypost", "過去の投稿へ") !!}
-                    </div>
-                @endif
-            </div>
-            
+            {!! link_to_route("post", "投稿TOPへ", [], ["class" => "btn btn-warning"]) !!}
+            &ensp;
+            {!! link_to_route("top", "TOPへ", [], ["class" => "btn btn-warning"]) !!}
+            &ensp;
+            @if(\Auth::check())
+                {!! link_to_route("mypost", "過去の投稿へ", [], ["class" => "btn btn-warning"]) !!}
+            @endif
         </div>
         <aside class="col-md-4">
             @include("commons.sidemenu")

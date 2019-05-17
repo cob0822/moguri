@@ -22,18 +22,31 @@
                         
                         <!--brが効かないので、pタグで改行している -->
                         <p></p>
-                        <input type="text" name="category" list="category" placeholder="入力 or 選択">
-                          <datalist id="category">
-                              
-                            <!--categoryMonths tableからカテゴリ一覧を取得-->
-                            <!--配列が多重になっているので、foreachを２回回している-->
-                            @foreach($categories as $categoryNum)
-                                @foreach($categoryNum as $category)
-                                    <option value={{$category}}>
+                        <!-- サイドメニューから見たいもの(初期値)が指定されている場合 -->
+                        @if(isset($init))
+                            <input type="text" name="category" list="category" placeholder="入力 or 選択" value="<?=$init?>">
+                              <datalist id="category">
+                                <!--categoryMonths tableからカテゴリ一覧を取得-->
+                                <!--配列が多重になっているので、foreachを２回回している-->
+                                @foreach($categories as $categoryNum)
+                                    @foreach($categoryNum as $category)
+                                        <option value={{$category}}>
+                                    @endforeach
                                 @endforeach
-                            @endforeach
-                            
-                          </datalist>
+                              </datalist>
+                        <!-- 初期値を指定せず遷移してきた場合 -->
+                        @else
+                            <input type="text" name="category" list="category" placeholder="入力 or 選択">
+                              <datalist id="category">
+                                <!--categoryMonths tableからカテゴリ一覧を取得-->
+                                <!--配列が多重になっているので、foreachを２回回している-->
+                                @foreach($categories as $categoryNum)
+                                    @foreach($categoryNum as $category)
+                                        <option value={{$category}}>
+                                    @endforeach
+                                @endforeach
+                              </datalist>
+                        @endif
                     </div>
                     <div class="col-md-4">
                         <p>時期 (任意)</p>
