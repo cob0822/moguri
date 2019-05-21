@@ -1,5 +1,4 @@
 function initMap() {
-    console.log(points);
     for (var i = 0; i < points.data.length; i++) {
         //console.log('googleMap' + points[i].id);
         map = new google.maps.Map(document.getElementById('googleMap' + points.data[i].id), { // #sampleに地図を埋め込む
