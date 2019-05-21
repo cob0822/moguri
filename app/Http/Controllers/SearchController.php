@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Point;
 use App\Review;
+use App\Ranking;
 
 class SearchController extends Controller
 {
@@ -144,39 +145,32 @@ class SearchController extends Controller
             "category" => "none",
             "rateAvg" => $rateAvg,
             "month" => $month,
-            "reviews" => $reviews,
             //"categories" => $categories,
         ]);
     }
     
-    
-    
     public function ranking(){
-        $points = Point::paginate(10);
-        $ranking = array();
-        
-        $rateAvg = [];
-        
-        foreach($points as $point){
-            $rate = \DB::table("reviews")->where("point_id", $point->id)->avg("review");
-            $rateAvg += array($point->id => $rate);
-        }
-        
-        //下書き
-        foreach($points as $point){
-            $rate = $point->reviews()->avg("review");
-        }
-        
-        //1 reviewsテーブルのpointID(distinct), review(AVG)で絞り込む
-        
-        //2 pointsテーブルと1のreviewsテーブルを結合する
-        
-        //3 2のpointsテーブルをreview(AVG)の降順で並び替える
-        
+        //Rankingモデルから、rankingsテーブルのデータ一覧を取得
+        $points = Ranking::paginate(10);
         
         return view("search.ranking", [
-            "points" => $points,  
-            "rateAvg" => $rateAvg,
+            "points" => $points,
+        ]);
+    }
+    
+    public function top(){
+        $points = Point::all();
+        $markerData = $points->map(function($point) {
+          return [
+            'name' => "test",
+            'lat' => $point->latitude,
+            'lng' => $point->longitude,
+          ];
+        });
+        
+        return view("top", [
+           "points" => $points, 
+           "markerData" => $markerData,
         ]);
     }
 }

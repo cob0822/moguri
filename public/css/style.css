@@ -109,9 +109,13 @@ div.content {
 	}
 }
 /*グーグルマップに複数ピンを立てる*/
-#sample{
+#top_googleMap{
 	width:700px;
 	height:400px;
+}
+.googleMap{
+	width:150px;
+	height:150px;
 }
 
 /*ツールチップ*/

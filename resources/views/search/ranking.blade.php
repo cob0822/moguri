@@ -1,7 +1,7 @@
 @extends("layouts.app")
 
 @section("content")
-    
+
     @section("test")
         <div class="text-white small">
             
@@ -16,15 +16,12 @@
             <hr>
                 <div class="row">
                     <div class="col-3">
-                        <div class="card">
-                            <br>
-                            <br>
-                            <br>                            
-                            ここにグーグルマップを出す
-                            <br>
-                            <br>
-                            <br>
-                        </div>
+                        
+                        
+                        
+                        <div class="googleMap" id="googleMap{{$point->id}}"></div>
+                        
+                        
                     </div>
                     <div class="col">
                         {{$point->prefecture}}
@@ -34,10 +31,10 @@
                         <!--本来はDBからデータ取得はコントローラに記述すべき -->
                         <div class="row">
                             <div class="col-5 col-md-3">
-                            @include("commons.star", ["rate" => $rateAvg[$point->id]])
+                            @include("commons.star", ["rate" => $point->avg])
                             </div>
                             <div class="col">
-                            <span class="ml-2">{{\DB::table("reviews")->where("point_id", $point->id)->count("review")}}件の投稿</span>
+                            <span class="ml-2">{{\DB::table("reviews")->where("point_id", $point->point_id)->count("review")}}件の投稿</span>
                             </div>
                         </div>
                         <br>
@@ -47,7 +44,7 @@
                         
                         <!--カテゴリは指定なしでリクエストする必要があるので、修正する -->
                         
-                        <p align="right">{!! link_to_route("ranking_to_detail", "詳細を見る", ["id" => $point->id]) !!}</p>
+                        <p align="right">{!! link_to_route("ranking_to_detail", "詳細を見る", ["id" => $point->point_id]) !!}</p>
                         
                         
                         
@@ -62,4 +59,9 @@
             @include("commons.sidemenu")
         </aside>
     </div>
+    <script>
+        var points = {!! json_encode($points->toArray()) !!}
+    </script>
+    <script src="./js/googleMap.js"></script>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyATubpo-Sq-u-uWRaIZn7gv84_lwCNzRK8&callback=initMap"></script>
 @endsection

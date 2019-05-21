@@ -11,9 +11,7 @@
 |
 */
 
-Route::get('/', function () {
-    return view('top');
-})->name("top");
+Route::get("/", "SearchController@top")->name("top");
 
 //ユーザー登録
 Route::get("signup", "Auth\RegisterController@showRegistrationForm")->name("signup.get");

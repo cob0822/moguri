@@ -35,7 +35,6 @@
             @endif
             
             {!! Form::submit("上記の内容で問い合わせる", ["class" => "btn btn-warning"]) !!}
-
         </div>
         <aside class="col-md-4">
             @include("commons.sidemenu")

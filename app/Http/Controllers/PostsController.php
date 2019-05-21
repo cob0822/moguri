@@ -59,10 +59,15 @@ class PostsController extends Controller
     }
     
     public function post_confirm(Request $request){
+        $prefectures = implode(',',[
+          "青森県", "秋田県", "岩手県", "山形県", "宮城県", "福島県", "新潟県", "富山県", "石川県", "福井県", "長野県", "岐阜県", "山梨県", "静岡県", "愛知県", "群馬県",
+           "栃木県", "埼玉県", "茨城県", "東京都", "千葉県", "神奈川県", "兵庫県", "京都府", "滋賀県", "大阪府", "奈良県", "和歌山県", "三重県", "山口県", "島根県", "鳥取県", "広島県",
+            "岡山県", "愛媛県", "香川県", "高知県", "徳島県", "長崎県", "佐賀県", "福岡県", "熊本県", "大分県", "鹿児島県", "宮崎県", "北海道", "沖縄県"
+        ]);
         
         if($request->pref31)
         $this->validate($request, [
-           "pref31" => "required",
+           "pref31" => "required|in:{$prefectures}",
            "addr31" => "required",
            "month" => "required",
            "category1" => "required",
@@ -286,7 +291,6 @@ class PostsController extends Controller
         }elseif(isset($comment)){
             \DB::table("reviews")->where("id", $id)->update(["comment" => $comment]);
         }
-        
         
         return back();
     }
