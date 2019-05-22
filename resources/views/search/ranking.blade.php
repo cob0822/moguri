@@ -62,6 +62,6 @@
     <script>
         var points = {!! json_encode($points->toArray()) !!}
     </script>
-    <script src="./js/googleMap.js"></script>
+    <script src="/js/googleMaps.js"></script>
     <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyATubpo-Sq-u-uWRaIZn7gv84_lwCNzRK8&callback=initMap"></script>
 @endsection

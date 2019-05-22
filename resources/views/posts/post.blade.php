@@ -14,25 +14,25 @@
             
             <span><strong>地名や郵便番号から住所を検索　※任意</strong></span>
             <!--ツールチップ-->
-            <span class="cp_tooltip">&emsp;<i class="far fa-question-circle"></i><span class="cp_tooltiptext">地名、郵便番号のいずれかを入力すると、住所を自動入力できます。</span></span>
+            <span class="cp_tooltip">&emsp;<i class="far fa-question-circle"></i><span class="cp_tooltiptext">地名を入力する場合、住所の入力は不要です。<br>郵便番号を入力すると、住所が自動的に入力されます。</span></span>
             
             
             {!! Form::open(["route" => "post.confirm"]) !!}
             <br>
                 <div class="form-group">
-                    &emsp;{!! Form::label("pointname", "地名から住所を検索　※任意") !!}
-                    {!! Form::text("pointname", old("pointname"), ["form-control"]) !!}
+                    &emsp;{!! Form::label("pointname", "地名　※任意") !!}
+                    {!! Form::text("pointname", old("pointname"), ["placeholder" => "例）伊豆海洋公園", "form-control"]) !!}
                 </div>
                 
                 <div class="form-group">
                     &emsp;{!! Form::label("address", "郵便番号　※任意") !!}
                     <!-- ▼郵便番号入力フィールド(3桁+4桁) -->
-                    <input type="text" name="zip31" size="4" maxlength="3"> － <input type="text" name="zip32" size="5" maxlength="4" onKeyUp="AjaxZip3.zip2addr('zip31','zip32','pref31','addr31','addr31');">
+                    <input type="text" name="zip31" size="4" maxlength="3"> － <input type="text" name="zip32" size="5" maxlength="4" onKeyUp="AjaxZip3.zip2addr('zip31','zip32','pref31','addr31','strt31');">
                     <!-- {!! Form::text("address", old("address"), ["form-controll"]) !!} -->
                 </div>
                 
                 <div class="form-group">
-                    <strong>{!! Form::label("address", "住所　※必須") !!}</strong>
+                    <strong>{!! Form::label("address", "住所　※必須(地名入力時は不要)") !!}</strong>
                     <!--ツールチップ-->
                     <span class="cp_tooltip">&emsp;<i class="far fa-question-circle"></i><span class="cp_tooltiptext">都道府県名は"県"や"都"まで入力してください。</span></span><br>
                         
@@ -41,7 +41,7 @@
                             <!-- ▼住所入力フィールド(都道府県) -->
                             <p>&emsp;都道府県：<input type="text" name="pref31" size="10" value="<?=$prefecture?>"></p>
                             <!-- ▼住所入力フィールド(都道府県以降の住所) -->
-                            <p>&emsp;以降の住所：<input type="text" name="addr31" size="50" value="<?=$belowPrefecture?>"></p>
+                            <p>&emsp;以降の住所：<input type="text" name="addr31"."strt31" size="50" value="<?=$belowPrefecture?>"></p>
                             <!-- {!! Form::text("address", old("address"), ["form-controll"]) !!} -->
                         <!--サイドバーからの遷移等、住所情報を持っていない場合-->
                         @else

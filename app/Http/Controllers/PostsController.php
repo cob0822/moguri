@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Rules\existpointname;
 
 class PostsController extends Controller
 {
@@ -41,19 +42,78 @@ class PostsController extends Controller
             $url_encode = /*urlencode(*/$strAddress/*)*/;
 
             //dd($google_leapis_url."?address=".$url_encode."&key=".$googlemap_api);
-            $jsonData = json_decode(file_get_contents($google_leapis_url."?address=".$url_encode."&key=".$googlemap_api, false, stream_context_create(array(
+            $jsonData = json_decode(file_get_contents($google_leapis_url."?address=".$url_encode."&language=ja"."&key=".$googlemap_api, false, stream_context_create(array(
                 'http' => array(
                     'timeout'=>10 // タイムアウト
                 )
             ))), true);
             
-            //dd($jsonData["results"][0]["geometry"]);
             if(isset($jsonData["results"][0]["geometry"]["location"])) {
                 $this->latitude = $jsonData["results"][0]["geometry"]["location"]["lat"];
                 $this->longitude = $jsonData["results"][0]["geometry"]["location"]["lng"];
             } else {
                 $this->latitude = 0.0;
                 $this->longitude = 0.0;
+            }
+            //地名入力時の住所補完機能　if文は不要かも
+            if(isset($jsonData["results"][0]["address_components"])) {
+                
+                //prefectureの取得
+                $prefectureCheck = null;
+                foreach($jsonData["results"][0]["address_components"] as $key => $element) {
+                   if(in_array('administrative_area_level_1', $element['types'])) {
+                      $prefectureCheck = $key;
+                      $this->prefecture = $jsonData["results"][0]["address_components"][$prefectureCheck]['long_name'];
+                      //dd($this->prefecture);
+                      break;
+                   }
+                }
+
+                //belowPrefectureの取得
+                $this->belowPrefecture = '';
+                $belowPrefectureCheck = null;
+                foreach($jsonData["results"][0]["address_components"] as $key => $element) {
+                   if(in_array('locality', $element['types'])) {
+                      $belowPrefectureCheck = $key;
+                      $this->belowPrefecture .= $jsonData["results"][0]["address_components"][$belowPrefectureCheck]['long_name'];
+                      //dd($this->belowPrefecture);
+                   }
+                }
+                foreach($jsonData["results"][0]["address_components"] as $key => $element) {
+                   if(in_array('sublocality_level_1', $element['types'])) {
+                      $belowPrefectureCheck = $key;
+                      $this->belowPrefecture .= $jsonData["results"][0]["address_components"][$belowPrefectureCheck]['long_name'];
+                      //dd($this->belowPrefecture);
+                   }
+                }
+                foreach($jsonData["results"][0]["address_components"] as $key => $element) {
+                   if(in_array('sublocality_level_2', $element['types'])) {
+                      $belowPrefectureCheck = $key;
+                      $this->belowPrefecture .= $jsonData["results"][0]["address_components"][$belowPrefectureCheck]['long_name'];
+                      //dd($this->belowPrefecture);
+                   }
+                }
+                foreach($jsonData["results"][0]["address_components"] as $key => $element) {
+                   if(in_array('sublocality_level_3', $element['types'])) {
+                      $belowPrefectureCheck = $key;
+                      $this->belowPrefecture .= $jsonData["results"][0]["address_components"][$belowPrefectureCheck]['long_name'];
+                      //dd($this->belowPrefecture);;
+                   }
+                }
+                foreach($jsonData["results"][0]["address_components"] as $key => $element) {
+                   if(in_array('sublocality_level_4', $element['types'])) {
+                      $belowPrefectureCheck = $key;
+                      $this->belowPrefecture .= $jsonData["results"][0]["address_components"][$belowPrefectureCheck]['long_name'];
+                      //dd($this->belowPrefecture);
+                   }
+                }
+                foreach($jsonData["results"][0]["address_components"] as $key => $element) {
+                   if(in_array('premise', $element['types'])) {
+                      $belowPrefectureCheck = $key;
+                      $this->belowPrefecture .= "-".$jsonData["results"][0]["address_components"][$belowPrefectureCheck]['long_name'];
+                      //dd($this->belowPrefecture);
+                   }
+                }
             }
         }
     }
@@ -65,24 +125,33 @@ class PostsController extends Controller
             "岡山県", "愛媛県", "香川県", "高知県", "徳島県", "長崎県", "佐賀県", "福岡県", "熊本県", "大分県", "鹿児島県", "宮崎県", "北海道", "沖縄県"
         ]);
         
-        if($request->pref31)
-        $this->validate($request, [
-           "pref31" => "required|in:{$prefectures}",
-           "addr31" => "required",
-           "month" => "required",
-           "category1" => "required",
-           "review" => "required",
-           "comment" => "required|max:300",
-        ]);
-        
-        /*
-        if(mb_substr("$request->pref31", -1) != "都" and mb_substr("$request->pref31", -1) != "道" and mb_substr("$request->pref31", -1) != "府" and mb_substr("$request->pref31", -1) != "県"){
-            
+        if(isset($request->pref31) and !isset($request->pointname)){
+            $this->validate($request, [
+               "pref31" => "required|in:{$prefectures}",
+               "addr31" => "required",
+               "month" => "required",
+               "category1" => "required",
+               "review" => "required",
+               "comment" => "required|max:300",
+            ]);
         }
-        */
         
+        $pointname = $request->pointname;
         $prefecture = $request->pref31;
-        $belowPrefecture = $request->addr31;
+        $belowPrefecture = $request->addr31.$request->strt31;
+        //地名が入力されている場合は、地名から住所取得（ジオコーディング） $prefectureと$belowPrefecture変数の中身を更新する
+        if(isset($pointname)){
+            $this->validate($request, [
+               "pointname" => ["required", new existpointname],
+               "month" => "required",
+               "category1" => "required",
+               "review" => "required",
+               "comment" => "required|max:300",
+            ]);
+            $lmg = $this->getLatLng("AIzaSyATubpo-Sq-u-uWRaIZn7gv84_lwCNzRK8", $pointname);
+            $prefecture = $this->prefecture;
+            $belowPrefecture = $this->belowPrefecture;
+        }
         $month = (int)$request->month;
         $categories = [$request->category1, $request->category2, $request->category3];
         //categoriesからデータ取得できれば、以下１〜３は削除する
@@ -101,8 +170,9 @@ class PostsController extends Controller
         }
         
         //ジオコーディングメソッドの実行
-        $lmg = $this->getLatLng("AIzaSyATubpo-Sq-u-uWRaIZn7gv84_lwCNzRK8", $prefecture.$belowPrefecture);
-        
+        if(isset($request->pref31) and !isset($request->pointname)){
+            $lmg = $this->getLatLng("AIzaSyATubpo-Sq-u-uWRaIZn7gv84_lwCNzRK8", $prefecture.$belowPrefecture);
+        }
         //ジオコーディングメソッドで取得した緯度経度を変数に格納する
         $latitude = $this->latitude;
         $longitude = $this->longitude;

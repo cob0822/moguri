@@ -30,7 +30,7 @@
         </aside>
     </div>
     <!-- グーグルマップに複数ピンを立てる-->
-    <script src="./js/googleMap_top.js"></script>
+    <script src="/js/googleMap_top.js"></script>
     <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyATubpo-Sq-u-uWRaIZn7gv84_lwCNzRK8&callback=initMap"></script>
     <script>
         var map;
