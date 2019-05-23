@@ -7,14 +7,20 @@ use Illuminate\Http\Request;
 use App\User;
 use App\Review;
 use Storage;
+use App\Post;
 
 class UsersController extends Controller
 {
     public function mypost(){
-        $posts = Review::where("user_id", \Auth::id())->paginate(10);
+
+        //Googleマップ表示用に、point情報をreview情報に紐付ける。
+        $reviews_points = \DB::table("reviews")->join("points", "reviews.point_id", "=", "points.id")->where("user_id", \Auth::id())->paginate(10);
+        //dd($reviews_points);
+        //モデルをjoinする方法はないのか確認
+        //$posts = Review::join("points", "Review.point_id", "=", "points.id")->where("user_id", \Auth::id())->paginate(10);
         
         return view("mypages.posted", [
-            "posts" => $posts,    
+            "reviews_points" => $reviews_points,
         ]);
     }
 
@@ -29,7 +35,7 @@ class UsersController extends Controller
     public function changeInformation(Request $request, $id){
             $name = $request->name;
             $email = $request->email;
-            
+            /*
             if(empty($email) and empty($name)){
                 $this->validate($request, [
                    "name" => "required_without:email",
@@ -48,7 +54,7 @@ class UsersController extends Controller
                     "name" => "required|string|min:4|max:12",
                     "email" => "required|string|email|max:255|unique:users",
                 ]);
-            }
+            }*/
             
         if(isset($name) and isset($email)){
             \DB::table("users")->where("id", $id)->update([
@@ -64,22 +70,32 @@ class UsersController extends Controller
                 "email" => $request->email,
             ]);
         }
-        
+        /*
         $user = User::find($id);
         
         $file = $request->file("icon");
         $path = Storage::disk("s3")->putFile("/", $file, "public");
+        */
         
-        $url = Storage::disk('s3')->url($path);
-        return redirect()->back()->with('s3url', $url);
+        //$url = Storage::disk('s3')->url($path);
+        //return redirect()->back()->with('s3url', $url);
         
         //$filename = $request->file("icon")->getClientOriginalName();
         //$path = $request->file('icon')->storeAs('public', $filename);
         //return back()->with('filename' => $filename);
         
-        
-        
-        
+        $post = new Post;
+      $form = $request->all();
+
+      //s3アップロード開始
+      $icon = $request->file('icon');
+      // バケットの`myprefix`フォルダへアップロード
+      $path = Storage::disk('s3')->putFile('moguri', $icon, 'public');
+      // アップロードした画像のフルパスを取得
+      $post->image_path = Storage::disk('s3')->url($path);
+
+      $post->save();
+      
         return view("mypages.user_update_complete", [
             "user" => $user,
         ]);

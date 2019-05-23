@@ -2,7 +2,7 @@
 
 function initMap() {
     for (var i = 0; i < points.data.length; i++) {
-        map = new google.maps.Map(document.getElementById('googleMap' + points.data[i].id), { // #sampleに地図を埋め込む
+        map = new google.maps.Map(document.getElementById('googleMap' + points.data[i].id), {
 
             center: { // 地図の中心を指定
             
@@ -13,4 +13,3 @@ function initMap() {
         });
     }
 }
-

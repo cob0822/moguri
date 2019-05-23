@@ -18,15 +18,11 @@
                 <hr>
                     <div class="row">
                         <div class="col-3">
-                            <div class="card">
-                                <br>
-                                <br>
-                                <br>                            
-                                ここにグーグルマップを出す
-                                <br>
-                                <br>
-                                <br>
-                            </div>
+                            
+                            
+                            <div class="googleMap" id="googleMap{{$point->id}}"></div>
+                            
+                            
                         </div>
                         <div class="col">
                             {{$point->prefecture}}
@@ -58,4 +54,9 @@
             @include("commons.sidemenu")
         </aside>
     </div>
+    <script>
+        var points = {!! json_encode($points->toArray()) !!}
+    </script>
+    <script src="/js/googleMapsForSearchComplete.js"></script>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyATubpo-Sq-u-uWRaIZn7gv84_lwCNzRK8&callback=initMap"></script>
 @endsection

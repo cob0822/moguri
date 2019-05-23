@@ -145,6 +145,7 @@ class SearchController extends Controller
             "category" => "none",
             "rateAvg" => $rateAvg,
             "month" => $month,
+            "reviews" => $reviews,
             //"categories" => $categories,
         ]);
     }

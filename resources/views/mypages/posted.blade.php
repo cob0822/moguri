@@ -12,25 +12,23 @@
         <div class="col-12 col-md-8">
             <h3>MYページ - 過去の投稿</h3>
             
-            @if($posts)
-                @foreach($posts as $post)
+            @if($reviews_points)
+                @foreach($reviews_points as $post)
                     <hr>
                         <div class="row">
                             <div class="col-3">
-                                <div class="card">
-                                    <br>
-                                    <br>
-                                    <br>                            
-                                    ここにグーグルマップを出す
-                                    <br>
-                                    <br>
-                                    <br>
-                                </div>
+                                
+                                
+                                
+                                <div class="googleMap" id="googleMap{{$post->id}}"></div>
+                                
+                                
+                                
                                 ここに画像を出す
                             </div>
                             <div class="col">
-                                {{$post->point->prefecture}}
-                                {{$post->point->belowPrefecture}}
+                                {{$post->prefecture}}
+                                {{$post->belowPrefecture}}
                                 <br>
                                 <!--レビューの星取得 -->
                                 @include("commons.star", ["rate" => $post->review])
@@ -67,7 +65,7 @@
                                                     </div>
                                                     <div class="modal-body">
                                                         <span>住所</span><br>
-                                                        &emsp;{{$post->point->prefecture}}{{$post->point->belowPrefecture}}<br><br>
+                                                        &emsp;{{$post->prefecture}}{{$post->belowPrefecture}}<br><br>
                                                         <span>時期</span><br>
                                                         &emsp;{{$post->month}}月<br><br>
                                                         <span>カテゴリ</span><br>
@@ -106,7 +104,7 @@
                                     </div>
                                     <!-- モーダルここまで -->
                                     <div class="col-4 col-md-4">
-                                        @include("users.favorite_button", ["point" => $post->point])
+                                        @include("users.favorite_button", ["point" => $post])
                                     </div>
                                     <div class="col-12 col-md-4">
                                         付近のショップを見る
@@ -121,10 +119,15 @@
                 <div>過去の投稿がありません。</div>
             @endif
             <hr>
-            {{$posts->render('pagination::bootstrap-4')}}
+            {{$reviews_points->render('pagination::bootstrap-4')}}
         </div>
         <aside class="col-md-4">
             @include("commons.sidemenu")
         </aside>
     </div>
+    <script>
+        var points = {!! json_encode($reviews_points->toArray()) !!}
+    </script>
+    <script src="/js/googleMaps.js"></script>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyATubpo-Sq-u-uWRaIZn7gv84_lwCNzRK8&callback=initMap"></script>
 @endsection
