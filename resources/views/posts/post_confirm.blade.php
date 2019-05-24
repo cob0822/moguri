@@ -13,7 +13,7 @@
             <h3>投稿確認</h3>
             <br>
             <p>住所:&emsp;{{$prefecture}}{{$belowPrefecture}}</p>
-            <p>画像:&emsp;</p>
+            <p>画像:&emsp;{{$imageCount}}件の画像</p>
             <p>時期:&emsp;
                 @if($month == 1)
                     1月

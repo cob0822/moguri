@@ -33,28 +33,16 @@ class UsersController extends Controller
     }
     
     public function changeInformation(Request $request, $id){
-            $name = $request->name;
-            $email = $request->email;
-            /*
-            if(empty($email) and empty($name)){
-                $this->validate($request, [
-                   "name" => "required_without:email",
-                   "email" => "required_without:name",
-                ]);
-            }elseif(empty($email)){
-                $this->validate($request, [
-                   "name" => "required|string|min:4|max:12",
-                ]);
-            }elseif(empty($name)){
-                $this->validate($request, [
-                   "email" => "required|string|email|max:255|unique:users",
-                ]);
-            }else{
-                $this->validate($request, [
-                    "name" => "required|string|min:4|max:12",
-                    "email" => "required|string|email|max:255|unique:users",
-                ]);
-            }*/
+        $name = $request->name;
+        $email = $request->email;
+        $icon = $request->file("icon");
+        
+        //いずれか１つ入力必須
+        $this->validate($request, [
+           "name" => "required_without_all:email,icon",
+           "email" => "required_without_all:name,icon",
+           "icon" => "required_without_all:name,email",
+        ]);
             
         if(isset($name) and isset($email)){
             \DB::table("users")->where("id", $id)->update([
@@ -70,32 +58,18 @@ class UsersController extends Controller
                 "email" => $request->email,
             ]);
         }
-        /*
+        
         $user = User::find($id);
         
-        $file = $request->file("icon");
-        $path = Storage::disk("s3")->putFile("/", $file, "public");
-        */
+        if(isset($icon)){
+            //ファイルのアップロード
+            $disk = Storage::disk("s3")->put("/", $icon, 'public');
+            //アップロードしたファイルのフルパスを取得してログインユーザーのicon要素に代入
+            $user->icon = Storage::disk("s3")->url($disk);
+            //ログインユーザー情報を更新
+            $user->save();
+        }
         
-        //$url = Storage::disk('s3')->url($path);
-        //return redirect()->back()->with('s3url', $url);
-        
-        //$filename = $request->file("icon")->getClientOriginalName();
-        //$path = $request->file('icon')->storeAs('public', $filename);
-        //return back()->with('filename' => $filename);
-        
-        $post = new Post;
-      $form = $request->all();
-
-      //s3アップロード開始
-      $icon = $request->file('icon');
-      // バケットの`myprefix`フォルダへアップロード
-      $path = Storage::disk('s3')->putFile('moguri', $icon, 'public');
-      // アップロードした画像のフルパスを取得
-      $post->image_path = Storage::disk('s3')->url($path);
-
-      $post->save();
-      
         return view("mypages.user_update_complete", [
             "user" => $user,
         ]);

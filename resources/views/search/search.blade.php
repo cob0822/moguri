@@ -135,6 +135,7 @@
                             <option value="鳥取県">鳥取</option>
                             <option value="広島県">広島</option>
                             <option value="岡山県">岡山</option>
+                            <option value="海外">海外</option>
                         </select>
                     </div>
                 </div>

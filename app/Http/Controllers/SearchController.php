@@ -162,13 +162,14 @@ class SearchController extends Controller
     public function top(){
         $points = Point::all();
         $markerData = $points->map(function($point) {
-          return [
-            'name' => "test",
+          return  [
+            'name' => $point->prefecture.$point->belowPrefecture,
             'lat' => $point->latitude,
             'lng' => $point->longitude,
           ];
         });
         
+        //dd($markerData);
         return view("top", [
            "points" => $points, 
            "markerData" => $markerData,

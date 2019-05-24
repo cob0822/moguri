@@ -11,7 +11,7 @@ class Controller extends BaseController
 {
     use AuthorizesRequests, DispatchesJobs, ValidatesRequests;
     
-    //都道府県名から地方名を取得
+    //都道府県名から地方名を取得　どれにも一致しない場合は"海外"を返す
     public function getArea($prefecture){
         switch($prefecture){
             case "青森県":
@@ -149,6 +149,8 @@ class Controller extends BaseController
             case "宮崎県":
                 return "九州地方";
                 break;
+            default:
+                return "海外";
         }
     }
     

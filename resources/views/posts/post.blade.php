@@ -17,7 +17,7 @@
             <span class="cp_tooltip">&emsp;<i class="far fa-question-circle"></i><span class="cp_tooltiptext">地名を入力する場合、住所の入力は不要です。<br>郵便番号を入力すると、住所が自動的に入力されます。</span></span>
             
             
-            {!! Form::open(["route" => "post.confirm"]) !!}
+            {!! Form::open(["route" => "post.confirm", "enctype" => "multipart/form-data"]) !!}
             <br>
                 <div class="form-group">
                     &emsp;{!! Form::label("pointname", "地名　※任意") !!}
@@ -53,8 +53,26 @@
                         @endif
                 </div>
     
-                <p><strong>画像のアップロード　※任意、3枚まで</strong></p><br>
+    
+                <p><strong>画像のアップロード　※任意、3枚まで</strong></p>
                 
+                <div class="row">
+                    <div class="col-3">
+                        {!! Form::label("image1", "1枚目　※任意", ['class' => 'control-label']) !!}
+                        {!! Form::file("image1", ["form-control"]) !!}
+                    </div>
+                    <div class="col-3">
+                        {!! Form::label("image2", "2枚目　※任意", ['class' => 'control-label']) !!}
+                        {!! Form::file("image2", ["form-control"]) !!}
+                    </div>
+                    <div class="col-3">
+                        {!! Form::label("image3", "3枚目　※任意", ['class' => 'control-label']) !!}
+                        {!! Form::file("image3", ["form-control"]) !!}
+                    </div>
+                </div>      
+                
+                
+                <br>
                 <p><strong>時期　※必須</strong></p>
                 <div class="row">
                     <div class="col-1 col-lg-1">

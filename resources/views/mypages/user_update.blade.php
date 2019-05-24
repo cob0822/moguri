@@ -11,7 +11,7 @@
     <div class="row">
         <div class="col-12 col-md-8">
             <h3 class="mb-5">MYページ - ユーザー情報編集</h3>
-            <!--
+            
             {!! Form::open(["route" => ["changeInformation", $user->id], "enctype" => "multipart/form-data"]) !!}
             
             
@@ -28,26 +28,17 @@
                     {!! Form::label("email", "変更後のメールアドレス : ") !!}
                     {!! Form::email("email", old("email"), ["form-control"]) !!}
                 </div>
-                
-                
-                <div class="mt-4">
+
+                <div class="form-group">
                     {!! Form::label("icon", "アイコンの登録", ['class' => 'control-label']) !!}
-                    <span>：&emsp;</span>
-                    {!! Form::file("icon") !!}
-                </div>-->
-                
-                
-                {!! Form::open(["route" => ["changeInformation", $user->id], "enctype" => "multipart/form-data"]) !!}
-                {!! Form::label("icon", "アイコンの登録", ['class' => 'control-label']) !!}
-                    <span>：&emsp;</span>
-                    {!! Form::file("icon") !!}
-                {!! Form::submit("入力した内容に変更", ["class" => "btn btn-warning"]) !!}
-                {!! Form::close() !!}
+                        <span>：&emsp;</span>
+                        {!! Form::file("icon", ["form-control"]) !!}
+                </div>            
             
                 <br>
-            <!--
+            
                 {!! Form::submit("入力した内容に変更", ["class" => "btn btn-warning"]) !!}
-            {!! Form::close() !!}-->
+            {!! Form::close() !!}
         </div>
         <aside class="col-md-4">
             @include("commons.sidemenu")

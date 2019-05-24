@@ -2,10 +2,12 @@
     
     @if(Auth::check())
         <div class="fixed-top pt-2 pr-3" style="left:initial;">
-            {!! link_to_route("logout.get", "ログアウト", [], ["class" => "btn btn-warning"]) !!}
             <!--ここにアイコンを出す -->
-            
-            <span class="pl-3 pr-2">{{Auth::user()->name}}</span>
+            @if(isset(\Auth::user()->icon))
+                <img src="{{\Auth::user()->icon}}" width="70" height="50">
+            @endif
+            <span class="pr-3">{{Auth::user()->name}}</span>
+            {!! link_to_route("logout.get", "ログアウト", [], ["class" => "btn btn-warning"]) !!}
         </div>
     @else
         <!-- 以下のdivコードは　https://teratail.com/questions/148276　でググった-->
@@ -21,18 +23,12 @@
     <nav class="navbar navbar-expand-sm navbar-dark bg-dark">
         
         @yield("test")
-        
-        
-        
+
         <span>
             <button type="button" class="navbar-toggler" data-toggle="collapse" data-target="#nav-bar">
                 <span class="navbar-toggler-icon"></span>
             </button>
         </span>
         
-        
-        
-	
-	
     </nav>
 </header>

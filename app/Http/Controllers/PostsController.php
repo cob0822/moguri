@@ -161,6 +161,9 @@ class PostsController extends Controller
         $review = $request->review;
         $comment = $request->comment;
         $area = $this->getArea($prefecture);
+        $image1 = $request->file("image1");
+        $image2 = $request->file("image2");
+        $image3 = $request->file("image3");
         
         //prefectureが北海道か沖縄の場合は、Controller.phpの地域表に存在していないので、地域を代入する
         if($prefecture == "北海道"){
@@ -177,6 +180,16 @@ class PostsController extends Controller
         $latitude = $this->latitude;
         $longitude = $this->longitude;
 
+        $imageCount = 0;
+        
+        if(isset($image1)){
+            $imageCount += 1;
+        }elseif(isset($image2)){
+            $imageCount += 1;
+        }elseif(isset($image3)){
+            $imageCount += 1;
+        }
+        
         $data = [
             "prefecture" => $prefecture,
             "belowPrefecture" => $belowPrefecture,
@@ -190,8 +203,12 @@ class PostsController extends Controller
             "latitude" => $latitude,
             "longitude" => $longitude,
             "area" => $area,
+            "image1" => $image1,
+            "image2" => $image2,
+            "image3" => $image3,
+            "imageCount" => $imageCount,
         ];
-        
+
         //$dataをセッションに保存
         $request->session()->put($data);
         
@@ -232,7 +249,25 @@ class PostsController extends Controller
             $user_id = 2147483647;
         }
         
+        
+        
+        
         //reviewsテーブルの更新
+        
+        if(isset($image1)){
+            //ファイルのアップロード
+            $disk1 = Storage::disk("s3")->put("/", $image1, 'public');
+        }
+        if(isset($image2)){
+            //ファイルのアップロード
+            $disk2 = Storage::disk("s3")->put("/", $image2, 'public');
+        }
+        if(isset($image3)){
+            //ファイルのアップロード
+            $disk3 = Storage::disk("s3")->put("/", $image3, 'public');
+        }
+        
+        
         \DB::table('reviews')->insert([
             'user_id' => $user_id,
             'point_id' => $point_id,
@@ -242,9 +277,9 @@ class PostsController extends Controller
             'month' => $data["month"],
             'review' => $data["review"],
             'comment' => $data["comment"],
-            'image1' => "test",
-            'image2' => "test",
-            'image3' => "test",
+            'image1' => Storage::disk("s3")->url($disk1),
+            'image2' => Storage::disk("s3")->url($disk2),
+            'image3' => Storage::disk("s3")->url($disk3),
             "reviewDate" => date("Y-m-d H:i:s"),
             'created_at' => date("Y-m-d H:i:s"),
             'updated_at' => date("Y-m-d H:i:s"),
@@ -342,6 +377,7 @@ class PostsController extends Controller
                 ]);
             }
         }
+        
         return view("posts.post_complete", compact("data"));
     }
     

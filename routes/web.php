@@ -86,5 +86,5 @@ Route::group(["middleware" => ["auth"]], function(){
 });
 
 //ファイルアップロード
-Route::get('upload', 'UploadController@create');
-Route::post('upload', 'UploadController@store');
+//Route::get('upload', 'UploadController@create');
+//Route::post('upload', 'UploadController@store');
