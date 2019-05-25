@@ -24,7 +24,18 @@
                                 
                                 
                                 
-                                ここに画像を出す
+                                
+                                @if(isset($post->image1))
+                                    <img src="{{$post->image1}}" width="50" height="40">
+                                @endif
+                                @if(isset($post->image2))
+                                    <img src="{{$post->image2}}" width="50" height="40">
+                                @endif
+                                @if(isset($post->image3))
+                                    <img src="{{$post->image3}}" width="50" height="40">
+                                @endif
+                                    
+                                    
                             </div>
                             <div class="col">
                                 {{$post->prefecture}}

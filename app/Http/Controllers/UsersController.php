@@ -7,7 +7,7 @@ use Illuminate\Http\Request;
 use App\User;
 use App\Review;
 use Storage;
-use App\Post;
+//use App\Post;
 
 class UsersController extends Controller
 {
@@ -62,8 +62,8 @@ class UsersController extends Controller
         $user = User::find($id);
         
         if(isset($icon)){
-            //ファイルのアップロード
-            $disk = Storage::disk("s3")->put("/", $icon, 'public');
+            //　/Iconフォルダにファイルのアップロード
+            $disk = Storage::disk("s3")->put("/Icon", $icon, 'public');
             //アップロードしたファイルのフルパスを取得してログインユーザーのicon要素に代入
             $user->icon = Storage::disk("s3")->url($disk);
             //ログインユーザー情報を更新

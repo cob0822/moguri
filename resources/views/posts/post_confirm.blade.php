@@ -13,7 +13,17 @@
             <h3>投稿確認</h3>
             <br>
             <p>住所:&emsp;{{$prefecture}}{{$belowPrefecture}}</p>
-            <p>画像:&emsp;{{$imageCount}}件の画像</p>
+            <p>画像:<br>
+            @if(isset($image1URL))
+                <img src="{{$image1URL}}" width="195" height="150">
+            @endif
+            @if(isset($image2URL))
+                <img src="{{$image2URL}}" width="195" height="150">
+            @endif
+            @if(isset($image3URL))
+                <img src="{{$image3URL}}" width="195" height="150">
+            @endif
+            </p>
             <p>時期:&emsp;
                 @if($month == 1)
                     1月

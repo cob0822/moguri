@@ -19,7 +19,7 @@
 
         @include('commons.header')
         
-        <div class="container">
+        <div class="container" id="content">
             @include('commons.error_messages')
             
             @yield('content')

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Rules\existpointname;
+use Storage;
 
 class PostsController extends Controller
 {
@@ -161,9 +162,40 @@ class PostsController extends Controller
         $review = $request->review;
         $comment = $request->comment;
         $area = $this->getArea($prefecture);
-        $image1 = $request->file("image1");
-        $image2 = $request->file("image2");
-        $image3 = $request->file("image3");
+        
+        if($request->hasFile("image1")){
+            $image1 = $request->file("image1");
+        }
+        if($request->hasFile("image2")){
+            $image2 = $request->file("image2");
+        }
+        if($request->hasFile("image3")){
+            $image3 = $request->file("image3");
+        }
+        
+        $image1URL = null;
+        $image2URL = null;
+        $image3URL = null;
+        
+        //画像ファイルを一時フォルダに格納
+        if(isset($image1)){
+            //ファイルのアップロード
+            $disk1 = Storage::disk("s3")->put("/Post", $image1, 'public');
+            //URLを変数に格納
+            $image1URL = Storage::disk("s3")->url($disk1);
+        }
+        if(isset($image2)){
+            //ファイルのアップロード
+            $disk2 = Storage::disk("s3")->put("/Post", $image2, 'public');
+            //URLを変数に格納
+            $image2URL = Storage::disk("s3")->url($disk2);
+        }
+        if(isset($image3)){
+            //ファイルのアップロード
+            $disk3 = Storage::disk("s3")->put("/Post", $image3, 'public');
+            //URLを変数に格納
+            $image3URL = Storage::disk("s3")->url($disk3);
+        }
         
         //prefectureが北海道か沖縄の場合は、Controller.phpの地域表に存在していないので、地域を代入する
         if($prefecture == "北海道"){
@@ -179,16 +211,6 @@ class PostsController extends Controller
         //ジオコーディングメソッドで取得した緯度経度を変数に格納する
         $latitude = $this->latitude;
         $longitude = $this->longitude;
-
-        $imageCount = 0;
-        
-        if(isset($image1)){
-            $imageCount += 1;
-        }elseif(isset($image2)){
-            $imageCount += 1;
-        }elseif(isset($image3)){
-            $imageCount += 1;
-        }
         
         $data = [
             "prefecture" => $prefecture,
@@ -203,10 +225,12 @@ class PostsController extends Controller
             "latitude" => $latitude,
             "longitude" => $longitude,
             "area" => $area,
-            "image1" => $image1,
-            "image2" => $image2,
-            "image3" => $image3,
-            "imageCount" => $imageCount,
+            //"image1" => $image1,
+            //"image2" => $image2,
+            //"image3" => $image3,
+            "image1URL" => $image1URL,
+            "image2URL" => $image2URL,
+            "image3URL" => $image3URL,
         ];
 
         //$dataをセッションに保存
@@ -250,22 +274,13 @@ class PostsController extends Controller
         }
         
         
-        
-        
         //reviewsテーブルの更新
         
-        if(isset($image1)){
-            //ファイルのアップロード
-            $disk1 = Storage::disk("s3")->put("/", $image1, 'public');
-        }
-        if(isset($image2)){
-            //ファイルのアップロード
-            $disk2 = Storage::disk("s3")->put("/", $image2, 'public');
-        }
-        if(isset($image3)){
-            //ファイルのアップロード
-            $disk3 = Storage::disk("s3")->put("/", $image3, 'public');
-        }
+        $image1URL = $data["image1URL"];
+        $image2URL = $data["image2URL"];
+        $image3URL = $data["image3URL"];
+        
+
         
         
         \DB::table('reviews')->insert([
@@ -277,9 +292,9 @@ class PostsController extends Controller
             'month' => $data["month"],
             'review' => $data["review"],
             'comment' => $data["comment"],
-            'image1' => Storage::disk("s3")->url($disk1),
-            'image2' => Storage::disk("s3")->url($disk2),
-            'image3' => Storage::disk("s3")->url($disk3),
+            'image1' => $image1URL,
+            'image2' => $image2URL,
+            'image3' => $image3URL,
             "reviewDate" => date("Y-m-d H:i:s"),
             'created_at' => date("Y-m-d H:i:s"),
             'updated_at' => date("Y-m-d H:i:s"),

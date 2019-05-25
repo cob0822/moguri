@@ -1,10 +1,10 @@
-<header class="mb-4">
+<header id="header" class="mb-4">
     
     @if(Auth::check())
         <div class="fixed-top pt-2 pr-3" style="left:initial;">
             <!--ここにアイコンを出す -->
             @if(isset(\Auth::user()->icon))
-                <img src="{{\Auth::user()->icon}}" width="70" height="50">
+                <img src="{{\Auth::user()->icon}}" width="65" height="50">
             @endif
             <span class="pr-3">{{Auth::user()->name}}</span>
             {!! link_to_route("logout.get", "ログアウト", [], ["class" => "btn btn-warning"]) !!}
