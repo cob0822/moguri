@@ -15,16 +15,16 @@ class CreateFavoritesTable extends Migration
     {
         Schema::create('favorites', function (Blueprint $table) {
             $table->increments('id');
-            $table->integer("userID")->unsigned()->index();
-            $table->integer("pointID")->unsigned()->index();
+            $table->integer("userid")->unsigned()->index();
+            $table->integer("pointid")->unsigned()->index();
             $table->timestamps();
             
             //外部キー設定
-            $table->foreign("userID")->references("id")->on("users")->onDelete("cascade");
-            $table->foreign("pointID")->references("id")->on("points")->onDelete("cascade");
+            $table->foreign("userid")->references("id")->on("users")->onDelete("cascade");
+            $table->foreign("pointid")->references("id")->on("points")->onDelete("cascade");
             
-            //userIDとpointIDの重複を許さない
-            $table->unique(["userID", "pointID"]);
+            //useridとpointidの重複を許さない
+            $table->unique(["userid", "pointid"]);
         });
     }
 

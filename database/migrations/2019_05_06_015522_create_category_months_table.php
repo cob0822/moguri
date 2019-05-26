@@ -15,7 +15,7 @@ class CreateCategoryMonthsTable extends Migration
     {
         Schema::create('categoryMonths', function (Blueprint $table) {
             $table->increments('id');
-            $table->integer("pointID")->unsigned()->index();
+            $table->integer("pointid")->unsigned()->index();
             $table->string("category");
             $table->boolean("Jan")->default(false);
             $table->boolean("Feb")->default(false);
@@ -32,10 +32,10 @@ class CreateCategoryMonthsTable extends Migration
             $table->timestamps();
             
             //外部キー設定
-            $table->foreign("pointID")->references("id")->on("points")->onDelete("cascade");
+            $table->foreign("pointid")->references("id")->on("points")->onDelete("cascade");
             
-            //pointIDとcategoryの重複を許さない
-            $table->unique(["pointID", "category"]);
+            //pointidとcategoryの重複を許さない
+            $table->unique(["pointid", "category"]);
         });
     }
 

@@ -18,8 +18,8 @@ class RenameUserIDPointIDToUserIdPointIdOnReviewsTable extends Migration
             $table->dropForeign("reviews_userid_foreign");
         });
         Schema::table('reviews', function (Blueprint $table) {
-            $table->renameColumn("userID", "user_id");
-            $table->renameColumn("pointID", "point_id");
+            $table->renameColumn("userid", "user_id");
+            $table->renameColumn("pointid", "point_id");
         });
         Schema::table('reviews', function (Blueprint $table) {
             $table->foreign("user_id")->references("id")->on("users")->onDelete("cascade");
@@ -39,12 +39,12 @@ class RenameUserIDPointIDToUserIdPointIdOnReviewsTable extends Migration
             $table->dropForeign("reviews_user_id_foreign");
         });
         Schema::table('reviews', function (Blueprint $table) {
-            $table->renameColumn("user_id", "userID");
+            $table->renameColumn("user_id", "userid");
             $table->renameColumn("point_id", "pointID");
         });
         Schema::table('reviews', function (Blueprint $table) {
-            $table->foreign("userID")->references("id")->on("users")->onDelete("cascade");
-            $table->foreign("pointID")->references("id")->on("points")->onDelete("cascade");
+            $table->foreign("userid")->references("id")->on("users")->onDelete("cascade");
+            $table->foreign("pointid")->references("id")->on("points")->onDelete("cascade");
         });
     }
 }

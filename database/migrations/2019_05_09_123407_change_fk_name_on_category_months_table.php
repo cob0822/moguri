@@ -17,7 +17,7 @@ class ChangeFkNameOnCategoryMonthsTable extends Migration
             $table->dropForeign("categorymonths_pointid_foreign");
         });
         Schema::table('categoryMonths', function (Blueprint $table) {
-            $table->renameColumn("pointID", "point_id");
+            $table->renameColumn("pointid", "point_id");
         });
         Schema::table('categoryMonths', function (Blueprint $table) {
             $table->foreign("point_id")->references("id")->on("points")->onDelete("cascade");
@@ -35,7 +35,7 @@ class ChangeFkNameOnCategoryMonthsTable extends Migration
             $table->dropForeign("categorymonths_pointid_foreign");
         });
         Schema::table('categoryMonths', function (Blueprint $table) {
-            $table->renameColumn("pointID", "point_id");
+            $table->renameColumn("pointid", "point_id");
         });
         Schema::table('categoryMonths', function (Blueprint $table) {
             $table->foreign("point_id")->references("id")->on("points")->onDelete("cascade");

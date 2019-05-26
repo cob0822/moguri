@@ -18,7 +18,7 @@ class ChangeFkNameOnFavoritesTable extends Migration
             $table->dropForeign("favorites_userid_foreign");
         });
         Schema::table('favorites', function (Blueprint $table) {
-            $table->renameColumn("userID", "user_id");
+            $table->renameColumn("userid", "user_id");
             $table->renameColumn("pointID", "point_id");
         });
         Schema::table('favorites', function (Blueprint $table) {
@@ -39,8 +39,8 @@ class ChangeFkNameOnFavoritesTable extends Migration
             $table->dropForeign("favorites_userid_foreign");
         });
         Schema::table('favorites', function (Blueprint $table) {
-            $table->renameColumn("userID", "user_id");
-            $table->renameColumn("pointID", "point_id");
+            $table->renameColumn("userid", "user_id");
+            $table->renameColumn("pointid", "point_id");
         });
         Schema::table('favorites', function (Blueprint $table) {
             $table->foreign("user_id")->references("id")->on("users")->onDelete("cascade");
