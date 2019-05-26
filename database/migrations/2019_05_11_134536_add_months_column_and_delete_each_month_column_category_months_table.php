@@ -13,7 +13,7 @@ class AddMonthsColumnAndDeleteEachMonthColumnCategoryMonthsTable extends Migrati
      */
     public function up()
     {
-        Schema::table('categoryMonths', function (Blueprint $table) {
+        Schema::table('categorymonths', function (Blueprint $table) {
             $table->dropColumn("Jan");
             $table->dropColumn("Feb");
             $table->dropColumn("Mar");
@@ -37,7 +37,7 @@ class AddMonthsColumnAndDeleteEachMonthColumnCategoryMonthsTable extends Migrati
      */
     public function down()
     {
-        Schema::table('categoryMonths', function (Blueprint $table) {
+        Schema::table('categorymonths', function (Blueprint $table) {
             $table->boolean("Jan")->default(false);
             $table->boolean("Feb")->default(false);
             $table->boolean("Mar")->default(false);

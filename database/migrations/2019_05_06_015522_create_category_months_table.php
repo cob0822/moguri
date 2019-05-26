@@ -13,7 +13,7 @@ class CreateCategoryMonthsTable extends Migration
      */
     public function up()
     {
-        Schema::create('categoryMonths', function (Blueprint $table) {
+        Schema::create('categorymonths', function (Blueprint $table) {
             $table->increments('id');
             $table->integer("pointid")->unsigned()->index();
             $table->string("category");
@@ -46,6 +46,6 @@ class CreateCategoryMonthsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('categoryMonths');
+        Schema::dropIfExists('categorymonths');
     }
 }
