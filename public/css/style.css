@@ -194,3 +194,7 @@ div.content {
 #content{
 	padding-top:120px;
 }
+
+ul.scroll{
+overflow-x:scroll;
+}

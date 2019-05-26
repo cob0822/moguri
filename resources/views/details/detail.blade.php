@@ -68,25 +68,43 @@
             <hr>
                 <!--画像一覧を表示する -->
 
+                <!-- 以下コメントアウトは画像の横スクロール(public/js/script.jsも) -->
+                <!--
+                 <div class="container text-center my-3">
+                        <div class="row mx-auto my-auto">
+                            <div id="recipeCarousel" class="carousel slide w-100" data-ride="carousel">
+                            <div class="carousel-inner w-100" role="listbox">
+                -->
+                    
                 @foreach($point->reviews as $review)
                 
                     <!-- 画像の表示(クリック時モーダル表示) -->
                     @if(isset($review->image1))
+                    <!-- <div class="carousel-item active"> -->
                         <button type="button" class="btn" data-toggle="modal" data-target="#review_id{{$review->review_id}}image1">
                             <img src="{{$review->image1}}" width="65" height="50">
                         </button>
+                    <!-- </div> --> 
                     @endif
+                 
+                
                     @if(isset($review->image2))
+                    <!--  <div class="carousel-item"> -->
                         <button type="button" class="btn" data-toggle="modal" data-target="#review_id{{$review->review_id}}image2">
                             <img src="{{$review->image2}}" width="65" height="50">
                         </button>
+                    <!--   </div> -->
                     @endif
+                
+                
                     @if(isset($review->image3))
+                    <!--<div class="carousel-item"> -->
                         <button type="button" class="btn" data-toggle="modal" data-target="#review_id{{$review->review_id}}image3">
                             <img src="{{$review->image3}}" width="65" height="50">
                         </button>
+                    <!--   </div> -->
                     @endif
-                    
+                                     
                     <!-- モーダルの表示 -->
                         <div class="modal" id="review_id{{$review->review_id}}image1" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
                             <div class="modal-dialog" role="document">
@@ -164,9 +182,20 @@
                             </div>
                         </div>
                     <!-- モーダルここまで -->
- 
+                     
                 @endforeach
-                
+                            <!--    </div>
+                                <a class="carousel-control-prev" href="#recipeCarousel" role="button" data-slide="prev">
+                                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                                    <span class="sr-only">Previous</span>
+                                </a>
+                                <a class="carousel-control-next" href="#recipeCarousel" role="button" data-slide="next">
+                                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                                    <span class="sr-only">Next</span>
+                                </a>
+                            </div>
+                        </div>
+                    </div> -->
             <hr>
             
             @foreach($reviews as $review) 
