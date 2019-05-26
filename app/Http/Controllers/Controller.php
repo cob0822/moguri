@@ -185,7 +185,7 @@ class Controller extends BaseController
             }
         }
         
-        //categoryMonthsテーブルの月カラムに対応する、対応表のラベル一覧を配列で取り出す
+        //categorymonthsテーブルの月カラムに対応する、対応表のラベル一覧を配列で取り出す
         foreach($months as $bit => $monthLabel){
             if($existingMonths & $bit){
                 array_push($existingMonthsLabel, $monthLabel);

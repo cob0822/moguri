@@ -10,7 +10,7 @@ class PostsController extends Controller
 {
     public function post(){
         //categoryMonthsに存在する全てのカテゴリを取得してcategoriesに代入
-        $categories = \DB::table("categoryMonths")->distinct()->select('category')->get();
+        $categories = \DB::table("categorymonths")->distinct()->select('category')->get();
         
         return view("posts.post", [
             "categories" => $categories,    
@@ -19,7 +19,7 @@ class PostsController extends Controller
     
     public function postThere($prefecture, $belowPrefecture){
         //categoryMonthsに存在する全てのカテゴリを取得してcategoriesに代入
-        $categories = \DB::table("categoryMonths")->distinct()->select('category')->get();
+        $categories = \DB::table("categorymonths")->distinct()->select('category')->get();
         
         return view("posts.post", [
             "categories" => $categories,   
@@ -302,11 +302,11 @@ class PostsController extends Controller
         
         //categoryMonthsテーブルの更新
         //category1
-        if(\DB::table("categoryMonths")->where("point_id", $point_id)->where("category", $data["category1"])->exists()){
+        if(\DB::table("categorymonths")->where("point_id", $point_id)->where("category", $data["category1"])->exists()){
             //月判定のロジック
             
             //categoryMonthsテーブルの該当レコード → monthカラム取り出し
-            $checkRecord = \DB::table("categoryMonths")->where("point_id", $point_id)->where("category", $data["category1"])->get();
+            $checkRecord = \DB::table("categorymonths")->where("point_id", $point_id)->where("category", $data["category1"])->get();
             
             $checkRecordMonth = $checkRecord->pluck("months")[0];
             
@@ -316,13 +316,13 @@ class PostsController extends Controller
             
             //monthsカラムに投稿した月が含まれていない場合は、投稿した月をmonthsカラムに加算する
             if($existFlag == false){
-                \DB::table('categoryMonths')
+                \DB::table('categorymonths')
                     ->where("point_id", $point_id)
                     ->where("category", $data["category1"])
                     ->increment('months', $data["month"]);
             }
         }else{
-            \DB::table('categoryMonths')->insert([
+            \DB::table('categorymonths')->insert([
                 'point_id' => $point_id,
                 'category' => $data["category1"],
                 'months' => $data["month"],
@@ -333,11 +333,11 @@ class PostsController extends Controller
         
         //category2
         if(isset($data["category2"])){
-            if(\DB::table("categoryMonths")->where("point_id", $point_id)->where("category", $data["category2"])->exists()){
+            if(\DB::table("categorymonths")->where("point_id", $point_id)->where("category", $data["category2"])->exists()){
                 //月判定のロジック
                 
                 //categoryMonthsテーブルの該当レコード → monthカラム取り出し
-                $checkRecord = \DB::table("categoryMonths")->where("point_id", $point_id)->where("category", $data["category2"])->get();
+                $checkRecord = \DB::table("categorymonths")->where("point_id", $point_id)->where("category", $data["category2"])->get();
                 $checkRecordMonth = $checkRecord->pluck("months")[0];
                 
                 //controllerの共通メソッド　第一引数：投稿された月　第二引数：categoryMonthsテーブルに既に登録されている月の一覧
@@ -346,13 +346,13 @@ class PostsController extends Controller
                 
                 //monthsカラムに投稿した月が含まれていない場合は、投稿した月をmonthsカラムに加算する
                 if($existFlag == false){
-                    \DB::table('categoryMonths')
+                    \DB::table('categorymonths')
                         ->where("point_id", $point_id)
                         ->where("category", $data["category2"])
                         ->increment('months', $data["month"]);
                 }
             }else{
-                \DB::table('categoryMonths')->insert([
+                \DB::table('categorymonths')->insert([
                     'point_id' => $point_id,
                     'category' => $data["category2"],
                     'months' => $data["month"],
@@ -364,11 +364,11 @@ class PostsController extends Controller
             
         //category3
         if(isset($data["category3"])){
-            if(\DB::table("categoryMonths")->where("point_id", $point_id)->where("category", $data["category3"])->exists()){
+            if(\DB::table("categorymonths")->where("point_id", $point_id)->where("category", $data["category3"])->exists()){
                 //月判定のロジック
                 
                 //categoryMonthsテーブルの該当レコード → monthカラム取り出し
-                $checkRecord = \DB::table("categoryMonths")->where("point_id", $point_id)->where("category", $data["category3"])->get();
+                $checkRecord = \DB::table("categorymonths")->where("point_id", $point_id)->where("category", $data["category3"])->get();
                 $checkRecordMonth = $checkRecord->pluck("months")[0];
                 
                 //controllerの共通メソッド　第一引数：投稿された月　第二引数：categoryMonthsテーブルに既に登録されている月の一覧
@@ -377,13 +377,13 @@ class PostsController extends Controller
                 
                 //monthsカラムに投稿した月が含まれていない場合は、投稿した月をmonthsカラムに加算する
                 if($existFlag == false){
-                    \DB::table('categoryMonths')
+                    \DB::table('categorymonths')
                         ->where("point_id", $point_id)
                         ->where("category", $data["category3"])
                         ->increment('months', $data["month"]);
                 }
             }else{
-                \DB::table('categoryMonths')->insert([
+                \DB::table('categorymonths')->insert([
                     'point_id' => $point_id,
                     'category' => $data["category3"],
                     'months' => $data["month"],

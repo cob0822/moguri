@@ -116,7 +116,7 @@
                     <div class="col-3">
                         <input type="text" name="category1" list="category1" placeholder="入力 or 選択">
                               <datalist id="category1">
-                                <!--categoryMonths tableからカテゴリ一覧を取得-->
+                                <!--categorymonths tableからカテゴリ一覧を取得-->
                                 <!--配列が多重になっているので、foreachを２回回している-->
                                 @foreach($categories as $categoryNum)
                                     @foreach($categoryNum as $category)
@@ -129,7 +129,7 @@
                     <div class="col-3">
                         <input type="text" name="category2" list="category2" placeholder="入力 or 選択">
                               <datalist id="category2">
-                                <!--categoryMonths tableからカテゴリ一覧を取得-->
+                                <!--categorymonths tableからカテゴリ一覧を取得-->
                                 <!--配列が多重になっているので、foreachを２回回している-->
                                 @foreach($categories as $categoryNum)
                                     @foreach($categoryNum as $category)
@@ -142,7 +142,7 @@
                     <div class="col-3">
                         <input type="text" name="category3" list="category3" placeholder="入力 or 選択">
                               <datalist id="category3">
-                                <!--categoryMonths tableからカテゴリ一覧を取得-->
+                                <!--categorymonths tableからカテゴリ一覧を取得-->
                                 <!--配列が多重になっているので、foreachを２回回している-->
                                 @foreach($categories as $categoryNum)
                                     @foreach($categoryNum as $category)

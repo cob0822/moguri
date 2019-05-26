@@ -11,7 +11,7 @@ class SearchController extends Controller
 {
     public function search(){
         //categoryMonthsに存在する全てのカテゴリを取得してcategoriesに代入
-        $categories = \DB::table("categoryMonths")->distinct()->select('category')->get();
+        $categories = \DB::table("categorymonths")->distinct()->select('category')->get();
         
         return view("search.search", [
             "categories" => $categories,   
@@ -20,7 +20,7 @@ class SearchController extends Controller
     
     public function searchThis($init){
         //categoryMonthsに存在する全てのカテゴリを取得してcategoriesに代入
-        $categories = \DB::table("categoryMonths")->distinct()->select('category')->get();
+        $categories = \DB::table("categorymonths")->distinct()->select('category')->get();
         
         return view("search.search", [
             "categories" => $categories,   
@@ -44,14 +44,14 @@ class SearchController extends Controller
         
         if($request->month != "-" and $request->area != "-"){
             //カテゴリと月とエリアが指定されている場合の検索
-            $points = \DB::select("select * from `points` inner join `categoryMonths` on `points`.`id` = `categoryMonths`.`point_id` where `category` = '".$category."' and `months` & ".$month." <> 0 and (`prefecture` = '".$area."' or `area` = '".$area."') ");
+            $points = \DB::select("select * from `points` inner join `categorymonths` on `points`.`id` = `categorymonths`.`point_id` where `category` = '".$category."' and `months` & ".$month." <> 0 and (`prefecture` = '".$area."' or `area` = '".$area."') ");
         }elseif($request->month != "-"){
             //カテゴリと月が指定されている場合の検索
-            $points = \DB::select("select * from `points` inner join `categoryMonths` on `points`.`id` = `categoryMonths`.`point_id` where `category` = '".$category."' and `months` & ".$month." <> 0");
+            $points = \DB::select("select * from `points` inner join `categorymonths` on `points`.`id` = `categorymonths`.`point_id` where `category` = '".$category."' and `months` & ".$month." <> 0");
         }elseif($request->area != "-"){
             //カテゴリとエリアが指定されている場合の検索
             //A and (B or C)の処理のため、クロージャを使用している
-            $points = \DB::table("points")->join("categoryMonths", "points.id", "=", "categoryMonths.point_id")
+            $points = \DB::table("points")->join("categorymonths", "points.id", "=", "categorymonths.point_id")
                 ->where("category",$request->category)
                 ->where(function($query) use ($request){
                     $query->where("area", $request->area)
@@ -60,7 +60,7 @@ class SearchController extends Controller
                 ->get();
         }else{
             //カテゴリのみ指定されている場合の検索
-            $points = \DB::table("points")->join("categoryMonths", "points.id", "=", "categoryMonths.point_id")->where("category",$request->category)->get();
+            $points = \DB::table("points")->join("categorymonths", "points.id", "=", "categorymonths.point_id")->where("category",$request->category)->get();
         }
         
         //ポイントごとのレートの平均値を　"ポイントID" => "レート平均値"　の連想配列で取得
