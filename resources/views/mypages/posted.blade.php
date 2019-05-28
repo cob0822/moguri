@@ -103,7 +103,7 @@
                                                             <br>
                                                             <div class="form-group">
                                                                 <strong>{!! Form::label("comment", "コメント") !!}</strong><br>
-                                                                {!! Form::textarea("comment", old("comment"), ["form-control"]) !!}
+                                                                {!! Form::textarea("comment", old("comment"), ["form-control", "cols" => "40", "rows" => "7"]) !!}
                                                             </div>
                                                     </div>
                                                     <div class="modal-footer">
