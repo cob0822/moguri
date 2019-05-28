@@ -46,15 +46,13 @@
                             <!-- ▼住所入力フィールド(都道府県) -->
                             <p>&emsp;都道府県：&emsp;<input type="text" name="pref31" size="10" value="<?=$prefecture?>"></p>
                             <!-- ▼住所入力フィールド(都道府県以降の住所) -->
-                            <p class="pc_area">&emsp;以降の住所：<input type="text" name="addr31"."strt31" size="50" value="<?=$belowPrefecture?>"></p>
-                            <p class="phone_area">&emsp;以降の住所：<input type="text" name="addr31"."strt31" size="40" value="<?=$belowPrefecture?>"></p>
+                            <p>&emsp;以降の住所：<input type="text" name="addr31"."strt31" size="40" value="<?=$belowPrefecture?>"></p>
                         <!--サイドバーからの遷移等、住所情報を持っていない場合-->
                         @else
                             <!-- ▼住所入力フィールド(都道府県) -->
                             <p>&emsp;都道府県：&emsp;<input type="text" name="pref31" size="10"></p>
                             <!-- ▼住所入力フィールド(都道府県以降の住所) -->
-                            <p class="pc_area">&emsp;以降の住所：<input type="text" name="addr31" size="50"></p>
-                            <p class="phone_area">&emsp;以降の住所：<input type="text" name="addr31" size="40"></p>
+                            <p>&emsp;以降の住所：<input type="text" name="addr31" size="40"></p>
                         @endif
                 </div>
     
