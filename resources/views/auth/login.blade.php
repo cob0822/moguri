@@ -1,6 +1,12 @@
 @extends('layouts.app')
 
 @section('content')
+    @section("test")
+        <div class="text-white small">
+        パスワードを忘れた場合はお問い合わせください
+        </div>
+    @endsection
+    
     <div class="text-center">
         <h3 class="pc_area">ログイン</h3>
         <h5 class="phone_area">ログイン</h5>

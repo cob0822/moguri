@@ -1,6 +1,12 @@
 @extends("layouts.app")
 
 @section("content")
+    @section("test")
+        <div class="text-white small">
+        登録してMYページ機能を使いましょう
+        </div>
+    @endsection
+    
     <div class="text-center">
         <h3 class="pc_area">ユーザー登録</h3>
         <h5 class="phone_area">ユーザー登録</h5>
