@@ -24,11 +24,34 @@
         
         @yield("test")
 
-        <span>
-            <button type="button" class="navbar-toggler" data-toggle="collapse" data-target="#nav-bar">
+            <button type="button" class="navbar-toggler" data-toggle="collapse" data-target="#nav-bar" aria-controls="nav-bar" aria-expanded="false">
                 <span class="navbar-toggler-icon"></span>
             </button>
-        </span>
         
+        
+            <!-- メニュー項目 -->
+            <div class="collapse navbar-collapse" id="nav-bar">
+                <ul class="navbar-nav phone_area">
+                    @if(Auth::check())
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" data-toggle="dropdown" style="color:#FFFFFF;">MYページ</a>
+                        <div class="dropdown-menu">
+                            <a class="dropdown-item">{!! link_to_route("mypost", "　過去の投稿", [], ["style" => "color:#000000;"]) !!}</a>
+                            <a class="dropdown-item">{!! link_to_route("favorites", "　お気に入りポイント", ["id" => Auth::id()], ["style" => "color:#000000;"]) !!}</a>
+                            <a class="dropdown-item">{!! link_to_route("information", "　ユーザー情報編集", ["id" => Auth::id()], ["style" => "color:#000000;"]) !!}</a>
+                        </div>
+                    </li>
+                    @endif
+                    <li class="nav-item active"><a class="nav-link">{!! link_to_route("top", "MAP", [], ["style" => "color:#FFFFFF;"]) !!}</a></li>
+                    <li class="nav-item"><a class="nav-link">{!! link_to_route("ranking", "ランキング", [], ["style" => "color:#FFFFFF;"]) !!}</a></li>
+                    <li class="nav-item"><a class="nav-link">{!! link_to_route("post", "ポイントを投稿する", [], ["style" => "color:#FFFFFF;"]) !!}</a></li>
+                    <li class="nav-item"><a class="nav-link">{!! link_to_route("search", "ポイントを探す", [], ["style" => "color:#FFFFFF;"]) !!}</a></li>
+                    <li class="nav-item"><a class="nav-link">{!! link_to_route("search.this", "クジラが見たい", ["init" => "クジラ"], ["style" => "color:#FFFFFF;"]) !!}</a></li>
+                    <li class="nav-item"><a class="nav-link">{!! link_to_route("search.this", "沈没船が見たい", ["init" => "沈没船"], ["style" => "color:#FFFFFF;"]) !!}</a></li>
+                    <li class="nav-item"><a class="nav-link">{!! link_to_route("search.this", "海底遺跡が見たい", ["init" => "海底遺跡"], ["style" => "color:#FFFFFF;"]) !!}</a></li>
+                    <li class="nav-item"><a class="nav-link">{!! link_to_route("search.this", "洞窟を探検したい", ["init" => "洞窟"], ["style" => "color:#FFFFFF;"]) !!}</a></li>
+                    <li class="nav-item"><a class="nav-link">{!! link_to_route("inquiry", "お問い合わせ", [], ["style" => "color:#FFFFFF;"]) !!}</a></li>
+                </ul>
+            </div>
     </nav>
 </header>

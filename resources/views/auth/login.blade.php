@@ -2,9 +2,10 @@
 
 @section('content')
     <div class="text-center">
-        <h3>ログイン</h3>
+        <h3 class="pc_area">ログイン</h3>
+        <h5 class="phone_area">ログイン</h5>
     </div>
-
+    <br>
     <div class="row">
         <div class="col-sm-6 offset-sm-3">
 

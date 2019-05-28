@@ -10,8 +10,10 @@
     
     <div class="row">
         <div class="col-12 col-md-8">
-            <h3 class="mb-5">MYページ - ユーザー情報編集</h3>
-            
+            <h3 class="pc_area">MYページ - ユーザー情報編集</h3>
+            <h5 class="phone_area">MYページ - ユーザー情報編集</h5>
+            <hr>
+            <p></p>
             {!! Form::open(["route" => ["changeInformation", $user->id], "enctype" => "multipart/form-data"]) !!}
             
             
@@ -39,8 +41,9 @@
             
                 {!! Form::submit("入力した内容に変更", ["class" => "btn btn-warning"]) !!}
             {!! Form::close() !!}
+        <br>
         </div>
-        <aside class="col-md-4">
+        <aside class="pc_area">
             @include("commons.sidemenu")
         </aside>
     </div>

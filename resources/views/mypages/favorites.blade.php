@@ -4,32 +4,31 @@
     
     @section("test")
         <div class="text-white small">
-            
+            お気に入りのポイントを登録できます
         </div>
     @endsection
     
     <div class="row">
         <div class="col-12 col-md-8">
-            <h3>MYページ - お気に入りポイント</h3>
+            <h3 class="pc_area">MYページ - お気に入りポイント</h3>
+            <h5 class="phone_area">MYページ - お気に入りポイント</h5>
             
             @if(isset($favorites[0]))
                 @foreach($favorites as $favorite)
                 <hr>
                     <div class="row">
-                        <div class="col-3">
-                            
+                        <div class="col-5 col-md-3">
                             
                             <div class="googleMap" id="googleMap{{$favorite->id}}"></div>
                             
-                            
                         </div>
-                        <div class="col">
+                        <div class="col-7 col-md-9">
                             {{$favorite->prefecture}}
                             {{$favorite->belowPrefecture}}
                             
                             <!--本来はDBからデータ取得はコントローラに記述すべき -->
                             <div class="row">
-                                <div class="col-5 col-md-3">
+                                <div class="col-12 col-md-3">
                                 @include("commons.star", ["rate" => $rateAvg[$favorite->id]])
                                 </div>
                                 <div class="col">
@@ -39,7 +38,7 @@
                             <br>
                             <br>
                             <br>
-                            <p align="right">{!! link_to_route("favorites_to_detail", "詳細を見る", ["id" => $favorite->id]) !!}</p>
+                            <p align="right" class="pr-4">{!! link_to_route("favorites_to_detail", "詳細を見る", ["id" => $favorite->id]) !!}</p>
                         </div>    
                     </div>
                 @endforeach
@@ -50,7 +49,7 @@
             @endif
         {{$favorites->render('pagination::bootstrap-4')}}
         </div>
-        <aside class="col-md-4">
+        <aside class="pc_area">
             @include("commons.sidemenu")
         </aside>
     </div>

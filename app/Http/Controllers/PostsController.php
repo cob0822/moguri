@@ -269,8 +269,8 @@ class PostsController extends Controller
         if(\Auth::check()){
             $user_id = \Auth::id();
         }else{
-            //未ログインの場合は、ゲストユーザー(id=2147483647)として登録
-            $user_id = 2147483647;
+            //未ログインの場合は、ゲストユーザー(id=3)として登録
+            $user_id = 3;
         }
         
         
@@ -280,7 +280,6 @@ class PostsController extends Controller
         $image2URL = $data["image2URL"];
         $image3URL = $data["image3URL"];
         
-
         
         
         \DB::table('reviews')->insert([
@@ -406,11 +405,11 @@ class PostsController extends Controller
         $comment = $request->comment;    
         
         if(isset($review) and isset($comment)){
-            \DB::table("reviews")->where("id", $id)->update(["review" => $review, "comment" => $comment]);    
+            \DB::table("reviews")->where("review_id", $id)->update(["review" => $review, "comment" => $comment]);    
         }elseif(isset($review)){
-            \DB::table("reviews")->where("id", $id)->update(["review" => $review]);
+            \DB::table("reviews")->where("review_id", $id)->update(["review" => $review]);
         }elseif(isset($comment)){
-            \DB::table("reviews")->where("id", $id)->update(["comment" => $comment]);
+            \DB::table("reviews")->where("review_id", $id)->update(["comment" => $comment]);
         }
         
         return back();

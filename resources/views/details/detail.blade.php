@@ -4,35 +4,43 @@
     
     @section("test")
         <div class="text-white small">
-            「お気に入りに追加」機能はログイン後に利用できます
+            ログインするとお気に入りに追加できます
         </div>
     @endsection
     
     <div class="row">
         <div class="col-12 col-md-8">
             @if($category != "none")
-                <h3><strong>{{$category}}</strong>が見られるポイント</h3>
+                <h3 class="pc_area"><strong>{{$category}}</strong>が見られるポイント</h3>
+                <h5 class="phone_area"><strong>{{$category}}</strong>が見られるポイント</h5>
             @else
-                <h3>ポイントの詳細</h3>
+                <h3 class="pc_area">ポイントの詳細</h3>
+                <h5 class="phone_area">ポイントの詳細</h5>
             @endif
             
             <hr>
                 <div class="row">
-                    <div class="col-3">
-                            
-                            
+                    <div class="col-5 col-md-3">
                             
                             <div class="googleMap" id="detailMap"></div>
                             
-                            
-                            
+                                <div class="col-sm-3 phone_area">
+                                    <br>&emsp;
+                                    @if($point->belowPrefecture != "")
+                                        {!! link_to_route("post.there", "投稿", ["prefecture" => $point->prefecture, "belowPrefecture" => $point->belowPrefecture], ["class" => "btn btn-warning"]) !!}
+                                    @elseif($point->belowPrefecture == "")
+                                        <!--belowPrefectureを持たないポイントの場合は、belowPrefectureに" "をセット(""やnullではエラーになった)-->
+                                        {!! link_to_route("post.there", "投稿", ["prefecture" => $point->prefecture, "belowPrefecture" => " "], ["class" => "btn btn-warning"]) !!}
+                                    @endif
+                                </div>
+                                
                     </div>
-                    <div class="col">
+                    <div class="col-7 col-md-9">
                         {{$point->prefecture}}
                         {{$point->belowPrefecture}}
                         <br>
                         <div class="row">
-                            <div class="col-5 col-md-3">
+                            <div class="col-12 col-md-3">
                                 @include("commons.star", ["rate" => $rateAvg])
                             </div>
                             <div class="col">
@@ -43,9 +51,9 @@
                         <br>
                         <br>
                         <br>
-                        <br>
+                        
                         <div class="row">
-                            <div class="col-4 offset-md-1 col-md-2">
+                            <div class="col-5 offset-md-1 col-md-2 pc_area">
                                 
                             @if($point->belowPrefecture != "")
                                 {!! link_to_route("post.there", "投稿", ["prefecture" => $point->prefecture, "belowPrefecture" => $point->belowPrefecture], ["class" => "btn btn-warning"]) !!}
@@ -55,11 +63,16 @@
                             @endif
                             
                             </div>
-                            <div class="col-8 col-md-4">
+                            <div class="col-12 col-md-4 pc_area">
                                 @include("users.favorite_button")
                             </div>
-                            <div class="col-12 col-md-5">
-                                付近のショップを見る
+                            <div class="col-12 phone_area mt-4">
+                                @include("users.favorite_button")
+                            </div>
+                            <div class="col-12 col-md-5 pc_area">
+                                <div class="btn btn-primary disabled">
+                                    <s>付近のショップを見る</s>
+                                </div>
                             </div>
                         </div>  
                           
@@ -76,6 +89,9 @@
                             <div class="carousel-inner w-100" role="listbox">
                 -->
                     
+                <!-- ここだけHTMLに変数宣言　画像がない場合、下線<hr>を出さないため-->
+                <?php $count = 0; ?>
+                
                 @foreach($point->reviews as $review)
                 
                     <!-- 画像の表示(クリック時モーダル表示) -->
@@ -84,15 +100,17 @@
                         <button type="button" class="btn" data-toggle="modal" data-target="#review_id{{$review->review_id}}image1">
                             <img src="{{$review->image1}}" width="65" height="50">
                         </button>
+                        <?php $count += 1; ?>
                     <!-- </div> --> 
                     @endif
-                 
+                
                 
                     @if(isset($review->image2))
                     <!--  <div class="carousel-item"> -->
                         <button type="button" class="btn" data-toggle="modal" data-target="#review_id{{$review->review_id}}image2">
                             <img src="{{$review->image2}}" width="65" height="50">
                         </button>
+                        <?php $count += 1; ?>
                     <!--   </div> -->
                     @endif
                 
@@ -102,6 +120,7 @@
                         <button type="button" class="btn" data-toggle="modal" data-target="#review_id{{$review->review_id}}image3">
                             <img src="{{$review->image3}}" width="65" height="50">
                         </button>
+                        <?php $count += 1; ?>
                     <!--   </div> -->
                     @endif
                                      
@@ -196,12 +215,14 @@
                             </div>
                         </div>
                     </div> -->
-            <hr>
+            @if($count != 0)
+                <hr>
+            @endif
             
             @foreach($reviews as $review) 
                 <div class="row">
-                    <div class="col-3">
-                        @if($review->user_id == 2147483647 or !isset($review->user->icon))
+                    <div class="col-3 col-md-2">
+                        @if($review->user_id == 3 or !isset($review->user->icon))
                             <img src="https://s3-ap-northeast-1.amazonaws.com/moguri/Guest/icoon-mono.png" width="65" height="60">
                         @else
                             <img src="{{$review->user->icon}}" width="70" height="55">
@@ -212,7 +233,6 @@
                         <div>{{$review->user->name}}</div>
                         @include("commons.star", ["rate" => $review->review])
                         
-                        <!--カテゴリ２と３がない場合,を表示しないように修正する -->
                         <div align="right">カテゴリ：
                             {{$review->category1}}
                                 @if($review->category2)
@@ -221,6 +241,7 @@
                                 @if($review->category3)
                                     ,{{$review->category3}}
                                 @endif
+                            <span class="phone_area"><br></span>
                             &emsp;時期：{{$month[$review->id]}}月
                         </div>
                         <br>
@@ -231,7 +252,7 @@
             @endforeach
             {{$reviews->render('pagination::bootstrap-4')}}
         </div>
-        <aside class="col-md-4">
+        <aside class="pc_area">
             @include("commons.sidemenu")
         </aside>
     </div>

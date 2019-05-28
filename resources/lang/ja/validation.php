@@ -68,7 +68,7 @@ return [
     'required_with'        => ':valuesのうちいずれかが指定された時:attributeは必須です。',
     'required_with_all'    => ':valuesのうちすべてが指定された時:attributeは必須です。',
     'required_without'     => ':valuesか:attributeのどちらかを入力してください。',
-    'required_without_all' => ':valuesのうちすべてが指定されなかった時:attributeは必須です。',
+    'required_without_all' => ':valuesが未入力の場合、:attributeは必須です。',
     'same'                 => ':attributeが:otherと一致しません。',
     'size'                 => [
         'numeric' => ':attributeには:sizeを指定してください。',
@@ -119,5 +119,6 @@ return [
         "name" => "「ユーザー名」",
         "email" => "「メールアドレス」",
         "inquiry" => "「お問い合わせ内容」",
+        "icon" => "「アイコン」",
     ],
 ];

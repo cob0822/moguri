@@ -4,26 +4,22 @@
     
     @section("test")
         <div class="text-white small">
-            「編集」ボタンからレビュー値とコメントを編集できます
+            「編集」ボタンからレビュー内容を編集できます
         </div>
     @endsection
     
     <div class="row">
         <div class="col-12 col-md-8">
-            <h3>MYページ - 過去の投稿</h3>
+            <h3 class="pc_area">MYページ - 過去の投稿</h3>
+            <h5 class="phone_area">MYページ - 過去の投稿</h5>
             
             @if($reviews_points)
                 @foreach($reviews_points as $post)
                     <hr>
                         <div class="row">
-                            <div class="col-3">
-                                
-                                
+                            <div class="col-5 col-md-3">
                                 
                                 <div class="googleMap" id="googleMap{{$post->id}}"></div>
-                                
-                                
-                                
                                 
                                 @if(isset($post->image1))
                                     <img src="{{$post->image1}}" width="50" height="40">
@@ -34,16 +30,20 @@
                                 @if(isset($post->image3))
                                     <img src="{{$post->image3}}" width="50" height="40">
                                 @endif
-                                    
-                                    
+                                
+                                <div class="pt-3 pl-1">{!! link_to_route("ranking_to_detail", "詳細を見る", ["id" => $post->point_id]) !!}</div>
+                                
                             </div>
-                            <div class="col">
+                            <div class="col-7 col-md-9">
                                 {{$post->prefecture}}
                                 {{$post->belowPrefecture}}
                                 <br>
-                                <!--レビューの星取得 -->
-                                @include("commons.star", ["rate" => $post->review])
-                                
+                                <div class="row">
+                                    <div class="col-12 col-md-3">
+                                        <!--レビューの星取得 -->
+                                        @include("commons.star", ["rate" => $post->review])
+                                    </div>
+                                </div>
                                 <br>
                                 カテゴリ：{{$post->category1}}
                                 @if($post->category2)
@@ -52,7 +52,9 @@
                                 @if($post->category3)
                                     ,{{$post->category3}}
                                 @endif
-                                &emsp;時期：{{$post->month}}月
+                                <span class="phone_area"><br></span>
+                                <span class="pc_area">&emsp;</span>
+                                時期：{{$post->month}}月
                                 <br>
                                 <br>
                                 {{$post->comment}}
@@ -60,7 +62,7 @@
                                 <br>
                                 <br>
                                 <div class="row">
-                                    <div class="col-4 col-md-2">
+                                    <div class="col-12 col-md-2">
                                         <!-- モーダルの表示 -->
                                         <button type="button" class="btn btn-warning" data-toggle="modal" data-target="#exampleModal{{$post->id}}">
                                             編集
@@ -88,7 +90,7 @@
                                                             ,{{$post->category3}}
                                                         @endif
                                                         <br><br>
-                                                        {!! Form::open(["route" => ["post.modify", $post->id]]) !!}
+                                                        {!! Form::open(["route" => ["post.modify", $post->review_id]]) !!}
                                                             <span>レビュー</span><br>
                                                             <select name="review">
                                                                 <option value="">-</option>
@@ -114,14 +116,20 @@
                                         </div>
                                     </div>
                                     <!-- モーダルここまで -->
-                                    <div class="col-4 col-md-4">
+
+                                    <div class="col-12 col-md-4 pc_area">
                                         @include("users.favorite_button", ["point" => $post])
                                     </div>
-                                    <div class="col-12 col-md-4">
-                                        付近のショップを見る
+                                    <div class="col-12 phone_area mt-4">
+                                        @include("users.favorite_button", ["point" => $post])
+                                    </div>
+                                    <div class="col-12 col-md-5 pc_area">
+                                        <div class="btn btn-primary disabled">
+                                            <s>付近のショップを見る</s>
+                                        </div>
                                     </div>
                                 </div>  
-                                  
+                                 
                             </div>    
                         </div>
                 @endforeach
@@ -132,7 +140,7 @@
             <hr>
             {{$reviews_points->render('pagination::bootstrap-4')}}
         </div>
-        <aside class="col-md-4">
+        <aside class="pc_area">
             @include("commons.sidemenu")
         </aside>
     </div>

@@ -23,17 +23,20 @@ footer {
 }
 
 /*-- PC版表示CSS  --*/
+.pc_area{
+  display:inline!important;
+}
 .phone_area{
-  display:none;
+  display:none!important;
 }
 
 /*-- スマホ版表示CSS  --*/
 @media screen and (max-width: 768px){
   .pc_area{
-    display:none;
+    display:none!important;
   }
   .phone_area{
-    display:block;
+    display:inline!important;
   }
 }
 
@@ -54,7 +57,7 @@ ul.sidenav {
 	border:1px solid #000000;
 	margin: 0;
 	padding: 0;
-	width: 200px;
+	width: 240px;
 	background-color: #EEEEEE;
 	position: fixed;
 	overflow: auto;
@@ -118,23 +121,24 @@ div.content {
 	height:150px;
 }
 
-/*ツールチップ*/
+/*ツールチップ　共通　*/
+
 .cp_tooltip {
 	position: relative;
 	display: inline-block;
 	cursor: pointer;
 }
+
 .cp_tooltip .cp_tooltiptext {
 	position: absolute;
 	z-index: 1;
-	bottom: 100%;
-	left: 0;
+	top: -80px;
+	right: -300%;
 	visibility: hidden;
-	width: auto;
+	/*width: auto;*/
 	white-space: nowrap;
 	padding: 0.3em 0.5em;
 	transition: opacity 1s;
-	/*text-align: center;*/
 	opacity: 0;
 	color: #000000;
 	border-radius: 6px;
@@ -142,14 +146,101 @@ div.content {
 }
 .cp_tooltip .cp_tooltiptext::after {
 	position: absolute;
-	top: 100%;
-	left: 50%;
+	top: 40%;
+	left: 104%;
 	margin-left: -5px;
 	content: ' ';
-	/*border: 5px solid transparent;*/
-	border-top-color: #da3c41;
+	/* border: 5px solid transparent; */
+	border-left-color: #da3c41;
 }
 .cp_tooltip:hover .cp_tooltiptext {
+	visibility: visible;
+	opacity: 1;
+}
+/* ツールチップ 住所　スマホ用 */ 
+.cp_tooltip .cp_tooltiptext_address {
+	position: absolute;
+	z-index: 1;
+	top: -80px;
+	right: -350%;
+	visibility: hidden;
+	/*width: auto;*/
+	white-space: nowrap;
+	padding: 0.3em 0.5em;
+	transition: opacity 1s;
+	opacity: 0;
+	color: #000000;
+	border-radius: 6px;
+	background-color: #EEEEEE;
+}
+.cp_tooltip .cp_tooltiptext_address::after {
+	position: absolute;
+	top: 40%;
+	left: 104%;
+	margin-left: -5px;
+	content: ' ';
+	/* border: 5px solid transparent; */
+	border-left-color: #da3c41;
+}
+.cp_tooltip:hover .cp_tooltiptext_address {
+	visibility: visible;
+	opacity: 1;
+}
+/* ツールチップ カテゴリ　スマホ用 */ 
+.cp_tooltip .cp_tooltiptext_category {
+	position: absolute;
+	z-index: 1;
+	top: -40px;
+	right: -350%;
+	visibility: hidden;
+	/*width: auto;*/
+	white-space: nowrap;
+	padding: 0.3em 0.5em;
+	transition: opacity 1s;
+	opacity: 0;
+	color: #000000;
+	border-radius: 6px;
+	background-color: #EEEEEE;
+}
+.cp_tooltip .cp_tooltiptext_category::after {
+	position: absolute;
+	top: 40%;
+	left: 104%;
+	margin-left: -5px;
+	content: ' ';
+	/* border: 5px solid transparent; */
+	border-left-color: #da3c41;
+}
+.cp_tooltip:hover .cp_tooltiptext_category {
+	visibility: visible;
+	opacity: 1;
+}
+/* ツールチップ 投稿画面地域（PCスマホ共通） */ 
+.cp_tooltip .cp_tooltiptext_area {
+	position: absolute;
+	z-index: 1;
+	top: -60px;
+	right: -300%;
+	visibility: hidden;
+	/*width: auto;*/
+	white-space: nowrap;
+	padding: 0.3em 0.5em;
+	transition: opacity 1s;
+	opacity: 0;
+	color: #000000;
+	border-radius: 6px;
+	background-color: #EEEEEE;
+}
+.cp_tooltip .cp_tooltiptext_area::after {
+	position: absolute;
+	top: 40%;
+	left: 104%;
+	margin-left: -5px;
+	content: ' ';
+	/* border: 5px solid transparent; */
+	border-left-color: #da3c41;
+}
+.cp_tooltip:hover .cp_tooltiptext_area {
 	visibility: visible;
 	opacity: 1;
 }

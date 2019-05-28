@@ -10,11 +10,30 @@
     
     <div class="row">
         <div class="col-12 col-md-8">
-            <h3>投稿完了</h3>
+            <h3 class="pc_area">投稿完了</h3>
+            <h5 class="phone_area">投稿完了</h5>
+            <hr>
+            <br>
+            <p>住所：{{$data["prefecture"]}}{{$data["belowPrefecture"]}}</p>
+            <p>画像：
+            @if(!isset($data["image1URL"]) and !isset($data["image2URL"]) and !isset($data["image3URL"]))
+                なし
+            @endif
             
-            <p>住所:&emsp;{{$data["prefecture"]}}{{$data["belowPrefecture"]}}</p>
-            <p>画像</p>
-            <p>時期:&emsp;
+            <br>
+            
+            @if(isset($data["image1URL"]))
+                <img src="{{$data["image1URL"]}}" width="195" height="150">
+            @endif
+            @if(isset($data["image2URL"]))
+                <img src="{{$data["image2URL"]}}" width="195" height="150">
+            @endif
+            @if(isset($data["image3URL"]))
+                <img src="{{$data["image3URL"]}}" width="195" height="150">
+            @endif
+            </p>
+            
+            <p>時期：
                 @if($data["month"] == 1)
                     1月
                 @elseif($data["month"] == 2)
@@ -41,15 +60,28 @@
                     12月
                 @endif
             </p>
-            <p>カテゴリ:&emsp;
+            <p>カテゴリ：
+            <!--
                 @foreach($data["categories"] as $category)
                     @if(isset($category))
                         {{$category}}&emsp;
                     @endif
                 @endforeach
+            -->
+                
+                @foreach($data["categories"] as $category)
+                    @if(isset($category))
+                        @if($category == reset($data["categories"]))
+                            {{$category}}
+                        @elseif($category != reset($data["categories"]))
+                            ,{{$category}}
+                        @endif
+                    @endif
+                @endforeach
             </p>
-            <p>レビュー:&emsp;{{$data["review"]}}</p>
-            <p>コメント:&emsp;{{$data["comment"]}}</p>
+            <span>レビュー：@include("commons.star", ["rate" => $data["review"]])</span>
+            <br>
+            <p>コメント：{{$data["comment"]}}</p>
             <br>
             {!! link_to_route("post", "投稿TOPへ", [], ["class" => "btn btn-warning"]) !!}
             &ensp;
@@ -59,7 +91,8 @@
                 {!! link_to_route("mypost", "過去の投稿へ", [], ["class" => "btn btn-warning"]) !!}
             @endif
         </div>
-        <aside class="col-md-4">
+        
+        <aside class="pc_area">
             @include("commons.sidemenu")
         </aside>
     </div>

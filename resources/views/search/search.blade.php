@@ -4,21 +4,22 @@
     
     @section("test")
         <div class="text-white small">
-            
+            カテゴリは必須項目です
         </div>
     @endsection
         
     <div class="row">
         <div class="col-12 col-md-8">
-            <h3>ポイントの検索</h3>
-            
+            <h3 class="pc_area">ポイントの検索</h3>
+            <h5 class="phone_area">ポイントの検索</h5>
+            <hr>
             {!! Form::open(["route" => "searching"]) !!}
             
                 <div class="row pt-4">
                     <div class="col-md-4">
                         <span>カテゴリ (必須)</span>
                         <!-- ツールチップ -->
-                        <span class="cp_tooltip">&emsp;<i class="far fa-question-circle"></i><span class="cp_tooltiptext">何が見たいですか?</span></span>
+                        <span class="cp_tooltip">&emsp;<i class="far fa-question-circle"></i><span class="cp_tooltiptext_category">何が見たいですか?</span></span>
                         
                         <!--brが効かないので、pタグで改行している -->
                         <p></p>
@@ -140,14 +141,12 @@
                     </div>
                 </div>
             <br>
-            <div class="row">
-                <div class="col-offset-2 col-10">
-                    {!! Form::submit("検索", ["class" => "btn btn-primary"]) !!}
-                </div>
+            <div align="center">
+                {!! Form::submit("検索", ["class" => "btn btn-primary", "style" => "width:40%;"]) !!}
             </div>
             {!! Form::close() !!}
         </div>
-        <aside class="col-md-4">
+        <aside class="pc_area">
             @include("commons.sidemenu")
         </aside>
     </div>

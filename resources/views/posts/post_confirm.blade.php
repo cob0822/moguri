@@ -4,16 +4,24 @@
     
     @section("test")
         <div class="text-white small">
-            投稿内容はMYページから編集可能ですが、投稿した画像は変更できません
+            以下の内容で投稿します
         </div>
     @endsection
 
     <div class="row">
         <div class="col-12 col-md-8">
-            <h3>投稿確認</h3>
+            <h3 class="pc_area">投稿確認</h3>
+            <h5 class="phone_area">投稿確認</h5>
+            <hr>
             <br>
-            <p>住所:&emsp;{{$prefecture}}{{$belowPrefecture}}</p>
-            <p>画像:<br>
+            <p>住所：{{$prefecture}}{{$belowPrefecture}}</p>
+            <p>画像：
+            @if(!isset($image1URL) and !isset($image2URL) and !isset($image3URL))
+                なし
+            @endif
+            
+            <br>
+            
             @if(isset($image1URL))
                 <img src="{{$image1URL}}" width="195" height="150">
             @endif
@@ -23,8 +31,9 @@
             @if(isset($image3URL))
                 <img src="{{$image3URL}}" width="195" height="150">
             @endif
+            
             </p>
-            <p>時期:&emsp;
+            <p>時期：
                 @if($month == 1)
                     1月
                 @elseif($month == 2)
@@ -51,16 +60,21 @@
                     12月
                 @endif
             </p>
-            <p>カテゴリ:&emsp;
+            <p>カテゴリ：
                 @foreach($categories as $category)
                     @if(isset($category))
-                        {{$category}}&emsp;
+                        @if($category == reset($categories))
+                            {{$category}}
+                        @elseif($category != reset($categories))
+                            ,{{$category}}
+                        @endif
                     @endif
                 @endforeach
             </p>
-            <p>レビュー:&emsp;{{$review}}</p>
-            <p>コメント:&emsp;{{$comment}}</p>
-            
+            <span>レビュー：@include("commons.star", ["rate" => $review])</span>
+            <br>
+            <p>コメント：{{$comment}}</p>
+            <br>
             <div class="row">
                 <div class="col-4">
                     <!--セッションで値を保持して戻り画面に初期表示したい -->
@@ -72,9 +86,9 @@
                     {!! Form::close() !!}
                 </div>
             </div>
-            
+            <br>
         </div>
-        <aside class="col-md-4">
+        <aside class="pc_area">
             @include("commons.sidemenu")
         </aside>
     </div>
