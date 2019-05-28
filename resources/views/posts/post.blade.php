@@ -94,7 +94,7 @@
                         </select>
                     </div>
                     <div class="col">
-                        <p>月</p>
+                        <p><span class="phone_area">&emsp;</span>月</p>
                     </div>
                 </div>
                 
