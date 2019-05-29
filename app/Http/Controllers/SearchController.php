@@ -33,6 +33,9 @@ class SearchController extends Controller
            "category" => "required",
         ]);
         
+        $rankingOrder = \DB::select(\DB::raw("select points.*, (select avg(review) from reviews where point_id = points.id) as avg from points order by avg desc;"));
+        dd($rankingOrder);
+        
         $category = $request->category;
         $area = $request->area;
         //search.blade.phpのoption valueはint型で渡せないので、int型に変換
@@ -44,11 +47,9 @@ class SearchController extends Controller
         
         if($request->month != "-" and $request->area != "-"){
             //カテゴリと月とエリアが指定されている場合の検索
-            //$points = \DB::select("select * from `points` inner join `categorymonths` on `points`.`id` = `categorymonths`.`point_id` where `category` = '".$category."' and `months` & ".$month." <> 0 and (`prefecture` = '".$area."' or `area` = '".$area."') ");
             $points = \DB::select("select * from points inner join categorymonths on points.id = categorymonths.point_id where category = :category and months & :month <> 0 and (prefecture = :prefecture or area = :area)", ["category" => $category, "month" => $month, "prefecture" => $area, "area" => $area]);
         }elseif($request->month != "-"){
             //カテゴリと月が指定されている場合の検索
-            //$points = \DB::select("select * from `points` inner join `categorymonths` on `points`.`id` = `categorymonths`.`point_id` where `category` = '".$category."' and `months` & ".$month." <> 0");
             $points = \DB::select("select * from points inner join categorymonths on points.id = categorymonths.point_id where category = :category and months & :month <> 0", ["category" => $category, "month" => $month]);
         }elseif($request->area != "-"){
             //カテゴリとエリアが指定されている場合の検索
