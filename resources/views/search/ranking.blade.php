@@ -4,7 +4,7 @@
 
     @section("test")
         <div class="text-white small">
-            毎日3:00に更新されます
+            レビューの評価順で表示しています
         </div>
     @endsection
     
