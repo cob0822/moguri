@@ -44,13 +44,15 @@ class SearchController extends Controller
         
         if($request->month != "-" and $request->area != "-"){
             //カテゴリと月とエリアが指定されている場合の検索
-            $points = \DB::select("select * from `points` inner join `categorymonths` on `points`.`id` = `categorymonths`.`point_id` where `category` = '".$category."' and `months` & ".$month." <> 0 and (`prefecture` = '".$area."' or `area` = '".$area."') ");
+            //$points = \DB::select("select * from `points` inner join `categorymonths` on `points`.`id` = `categorymonths`.`point_id` where `category` = '".$category."' and `months` & ".$month." <> 0 and (`prefecture` = '".$area."' or `area` = '".$area."') ");
+            $points = \DB::select("select * from points inner join categorymonths on points.id = categorymonths.point_id where category = :category and months & :month <> 0 and (prefecture = :prefecture or area = :area)", ["category" => $category, "month" => $month, "prefecture" => $area, "area" => $area]);
         }elseif($request->month != "-"){
             //カテゴリと月が指定されている場合の検索
-            $points = \DB::select("select * from `points` inner join `categorymonths` on `points`.`id` = `categorymonths`.`point_id` where `category` = '".$category."' and `months` & ".$month." <> 0");
+            //$points = \DB::select("select * from `points` inner join `categorymonths` on `points`.`id` = `categorymonths`.`point_id` where `category` = '".$category."' and `months` & ".$month." <> 0");
+            $points = \DB::select("select * from points inner join categorymonths on points.id = categorymonths.point_id where category = :category and months & :month <> 0", ["category" => $category, "month" => $month]);
         }elseif($request->area != "-"){
             //カテゴリとエリアが指定されている場合の検索
-            //A and (B or C)の処理のため、クロージャを使用している
+            //A and (B or C)の処理のため、クロ���ジャを使用している
             $points = \DB::table("points")->join("categorymonths", "points.id", "=", "categorymonths.point_id")
                 ->where("category",$request->category)
                 ->where(function($query) use ($request){
