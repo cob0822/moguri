@@ -31,7 +31,7 @@
                                     <img src="{{$post->image3}}" width="50" height="40">
                                 @endif
                                 
-                                <div class="pt-3 pl-1">{!! link_to_route("ranking_to_detail", "詳細を見る", ["id" => $post->point_id]) !!}</div>
+                                <div class="pt-3 pl-1">{!! link_to_route("posted_to_detail", "詳細を見る", ["id" => $post->point_id]) !!}</div>
                                 
                             </div>
                             <div class="col-7 col-md-9">
@@ -54,7 +54,7 @@
                                 @endif
                                 <span class="phone_area"><br></span>
                                 <span class="pc_area">&emsp;</span>
-                                時期：{{$post->month}}月
+                                時期：{{$months[$post->review_id]}}月
                                 <br>
                                 <br>
                                 {{$post->comment}}
@@ -80,7 +80,7 @@
                                                         <span>住所</span><br>
                                                         &emsp;{{$post->prefecture}}{{$post->belowPrefecture}}<br><br>
                                                         <span>時期</span><br>
-                                                        &emsp;{{$post->month}}月<br><br>
+                                                        &emsp;{{$months[$post->review_id]}}月<br><br>
                                                         <span>カテゴリ</span><br>
                                                         &emsp;{{$post->category1}}
                                                         @if($post->category2)

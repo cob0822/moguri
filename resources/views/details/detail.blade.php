@@ -242,7 +242,7 @@
                                     ,{{$review->category3}}
                                 @endif
                             <span class="phone_area"><br></span>
-                            &emsp;時期：{{$month[$review->id]}}月
+                            &emsp;時期：{{$month[$review->review_id]}}月
                         </div>
                         <br>
                         <div>{{$review->comment}}</div>

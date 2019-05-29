@@ -19,8 +19,15 @@ class UsersController extends Controller
         //モデルをjoinする方法はないのか確認
         //$posts = Review::join("points", "Review.point_id", "=", "points.id")->where("user_id", \Auth::id())->paginate(10);
         
+        $months = [];
+        
+        foreach($reviews_points as $review_point){
+            $months += array($review_point->review_id => $this->getMonth($review_point->month));
+        }
+        
         return view("mypages.posted", [
             "reviews_points" => $reviews_points,
+            "months" => $months,
         ]);
     }
 

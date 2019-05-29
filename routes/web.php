@@ -71,6 +71,7 @@ Route::group(["prefix" => "ranking/{id}"], function(){
 //ログイン後のprefixに入れるべきだが、入れると何故かエラーになる
 Route::get("mypost", "UsersController@mypost")->name("mypost");
 Route::post("mypost/modify/{id}", "PostsController@post_modify")->name("post.modify");
+Route::get("detail/{id}", "SearchController@posted_to_detail")->name("posted_to_detail");
 
 Route::group(["middleware" => ["auth"]], function(){
     Route::group(["prefix" => "users/{id}"], function(){

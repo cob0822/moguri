@@ -87,7 +87,7 @@ class SearchController extends Controller
         $reviews = Review::where("point_id", $id)->paginate(10);
         
         foreach($point->reviews as $review){
-            $month += array($review->id => $this->getMonth($review->month));
+            $month += array($review->review_id => $this->getMonth($review->month));
         }
         
         //$categories = \DB::table("points")->join("categoryMonths", "points.id", "=", "categoryMonths.point_id")->groupBy("category")->get();
@@ -111,7 +111,7 @@ class SearchController extends Controller
         $reviews = Review::where("point_id", $id)->paginate(10);
 
         foreach($point->reviews as $review){
-            $month += array($review->id => $this->getMonth($review->month));
+            $month += array($review->review_id => $this->getMonth($review->month));
         }
         
         //$categories = \DB::table("points")->join("categoryMonths", "points.id", "=", "categoryMonths.point_id")->groupBy("category")->get();
@@ -135,7 +135,31 @@ class SearchController extends Controller
         $reviews = Review::where("point_id", $id)->paginate(10);
         
         foreach($point->reviews as $review){
-            $month += array($review->id => $this->getMonth($review->month));
+            $month += array($review->review_id => $this->getMonth($review->month));
+        }
+        
+        //$categories = \DB::table("points")->join("categoryMonths", "points.id", "=", "categoryMonths.point_id")->groupBy("category")->get();
+        
+        //ポイントのレートの平均値を取得
+            $rateAvg = \DB::table("reviews")->where("point_id", $point->id)->avg("review");
+
+        return view("details.detail", [
+            "point" => $point,
+            "category" => "none",
+            "rateAvg" => $rateAvg,
+            "month" => $month,
+            "reviews" => $reviews,
+            //"categories" => $categories,
+        ]);
+    }
+    
+    public function posted_to_detail($id){
+        $point = Point::find($id);
+        $month = [];
+        $reviews = Review::where("point_id", $id)->paginate(10);
+        
+        foreach($reviews as $review){
+            $month += array($review->review_id => $this->getMonth($review->month));
         }
         
         //$categories = \DB::table("points")->join("categoryMonths", "points.id", "=", "categoryMonths.point_id")->groupBy("category")->get();
@@ -155,13 +179,12 @@ class SearchController extends Controller
     
     public function ranking(){
         
-        //本当は以下の処理/moguri/app/Console/Commands/rankingUpdate.phpでバッチ処理したいが、heroku(postgres)で動かないので毎回処理
+        //本当は以下の処理を/moguri/app/Console/Commands/rankingUpdate.phpでバッチ処理したいが、AWSは未使用時に停止してしまうので、ランキング表示時に毎回処理
         //rankingsテーブルのデータを全て削除
         \DB::select(\DB::raw("DELETE from rankings"));
         
         //rankingsテーブルにインサートしたいデータを取得
-        //多分herokuはpostgresなので以下の生SQLがエラーになっている
-        //$rankingOrder = \DB::select(\DB::raw("select points.*, (select avg(review) from reviews where point_id = points.id) as avg from points order by avg desc;"));
+        //coalesceを使用して、avgが取得できない場合(何らかの理由でreviewsテーブルにデータが存在しない場合)はデフォルト値でavg=0を入れている
         $rankingOrder = \DB::select(\DB::raw("select points.*, coalesce((select avg(review) from reviews where point_id = points.id), 0) as avg from points order by avg desc;"));
         //$rankingOrderを1行ずつ取り出し、インサート
         foreach($rankingOrder as $insertRecord){
