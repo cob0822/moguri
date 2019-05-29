@@ -100,9 +100,9 @@
                                                                 <option value="2">☆☆</option>
                                                                 <option value="1">☆</option>
                                                             </select>
-                                                            <br>
+                                                            <br><br>
                                                             <div class="form-group">
-                                                                <strong>{!! Form::label("comment", "コメント") !!}</strong><br>
+                                                                {!! Form::label("comment", "コメント") !!}<br>
                                                                 {!! Form::textarea("comment", old("comment"), ["form-control", "cols" => "40", "rows" => "7"]) !!}
                                                             </div>
                                                     </div>
