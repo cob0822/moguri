@@ -33,9 +33,6 @@ class SearchController extends Controller
            "category" => "required",
         ]);
         
-        $rankingOrder = \DB::select(\DB::raw("select points.*, (select avg(review) from reviews where point_id = points.id) as avg from points order by avg desc;"));
-        dd($rankingOrder);
-        
         $category = $request->category;
         $area = $request->area;
         //search.blade.phpのoption valueはint型で渡せないので、int型に変換
