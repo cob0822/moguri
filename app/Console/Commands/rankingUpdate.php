@@ -25,7 +25,7 @@ class rankingUpdate extends Command
         \DB::select(\DB::raw("DELETE from rankings"));
         
         //rankingsテーブルにインサートしたいデータを取得
-        //多分herokuはpostgreなので以下の生SQLがエラーになっている
+        //多分herokuはpostgresなので以下の生SQLがエラーになっている
         $rankingOrder = \DB::select(\DB::raw("select points.*, (select avg(review) from reviews where point_id = points.id) as avg from points order by avg desc;"));
 
         //$rankingOrderを1行ずつ取り出し、インサート

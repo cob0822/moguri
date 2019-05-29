@@ -126,7 +126,7 @@ class PostsController extends Controller
             "岡山県", "愛媛県", "香川県", "高知県", "徳島県", "長崎県", "佐賀県", "福岡県", "熊本県", "大分県", "鹿児島県", "宮崎県", "北海道", "沖縄県"
         ]);
         
-        if(isset($request->pref31) and !isset($request->pointname)){
+        if(!isset($request->pointname)){
             $this->validate($request, [
                "pref31" => "required|in:{$prefectures}",
                "addr31" => "required",
