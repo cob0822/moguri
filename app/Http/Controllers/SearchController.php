@@ -161,8 +161,8 @@ class SearchController extends Controller
         
         //rankingsテーブルにインサートしたいデータを取得
         //多分herokuはpostgresなので以下の生SQLがエラーになっている
-        $rankingOrder = \DB::select(\DB::raw("select points.*, (select avg(review) from reviews where point_id = points.id) as avg from points order by avg desc;"));
-
+        //$rankingOrder = \DB::select(\DB::raw("select points.*, (select avg(review) from reviews where point_id = points.id) as avg from points order by avg desc;"));
+        $rankingOrder = \DB::select(\DB::raw("select points.*, coalesce((select avg(review) from reviews where point_id = points.id), 0) as avg from points order by avg desc;"));
         //$rankingOrderを1行ずつ取り出し、インサート
         foreach($rankingOrder as $insertRecord){
             $dt = new Carbon();
