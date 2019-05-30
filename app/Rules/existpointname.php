@@ -40,6 +40,6 @@ class existpointname implements Rule
      */
     public function message()
     {
-        return '入力した地名の住所情報が取得できませんでした。郵便番号か住所を入力してください。';
+        return '入力した地名の住所情報が取得できませんでした。正しい地名を再入力するか、住所を入力してください。';
     }
 }

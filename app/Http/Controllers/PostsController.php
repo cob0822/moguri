@@ -125,15 +125,13 @@ class PostsController extends Controller
            "栃木県", "埼玉県", "茨城県", "東京都", "千葉県", "神奈川県", "兵庫県", "京都府", "滋賀県", "大阪府", "奈良県", "和歌山県", "三重県", "山口県", "島根県", "鳥取県", "広島県",
             "岡山県", "愛媛県", "香川県", "高知県", "徳島県", "長崎県", "佐賀県", "福岡県", "熊本県", "大分県", "鹿児島県", "宮崎県", "北海道", "沖縄県"
         ]);
-        
+            
         if(!isset($request->pointname)){
             $this->validate($request, [
                "pref31" => "required|in:{$prefectures}",
                "addr31" => "required",
                "month" => "required",
                "category1" => "required",
-               "category2" => "different:category1",
-               "category3" => "different:category1|different:category2",
                "review" => "required",
                "comment" => "required|max:300",
             ]);
@@ -148,14 +146,26 @@ class PostsController extends Controller
                "pointname" => ["required", new existpointname],
                "month" => "required",
                "category1" => "required",
-               "category2" => "different:category1",
-               "category3" => "different:category1|different:category2",
                "review" => "required",
                "comment" => "required|max:300",
             ]);
             $lmg = $this->getLatLng("AIzaSyATubpo-Sq-u-uWRaIZn7gv84_lwCNzRK8", $pointname);
             $prefecture = $this->prefecture;
             $belowPrefecture = $this->belowPrefecture;
+        }
+        //カテゴリ２、３が入力されている場合のバリデーション
+        if(isset($category2)){
+            $this->validate($request, [
+               "category2" => "different:category1",
+            ]);
+        }elseif(isset($category3) and is_null($category2)){
+            $this->validate($request, [
+               "category3" => "different:category1",
+            ]);
+        }elseif(isset($category3) and !is_null($category2)){
+            $this->validate($request, [
+               "category3" => "different:category1|different:category2",
+            ]);
         }
         $month = (int)$request->month;
         $categories = [$request->category1, $request->category2, $request->category3];
@@ -248,6 +258,8 @@ class PostsController extends Controller
 
         //$dataをセッションに保存
         $request->session()->put($data);
+        //リクエストをセッションに保存
+        $request->flash();
         
         return view("posts.post_confirm", $data);
     }

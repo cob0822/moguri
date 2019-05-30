@@ -37,7 +37,7 @@
                         <p>
                             &emsp;{!! Form::label("address", "郵便番号から住所検索：") !!}
                             <!-- ▼郵便番号入力フィールド(3桁+4桁) -->
-                            <input type="text" name="zip31" size="4" maxlength="3"> － <input type="text" name="zip32" size="5" maxlength="4" onKeyUp="AjaxZip3.zip2addr('zip31','zip32','pref31','addr31','strt31');">
+                            <input type="text" name="zip31" size="4" maxlength="3" value = "{{ old('zip31') }}"> － <input type="text" name="zip32" size="5" maxlength="4" value = "{{ old('zip32') }}" onKeyUp="AjaxZip3.zip2addr('zip31','zip32','pref31','addr31','strt31');">
                             <!-- {!! Form::text("address", old("address"), ["form-controll"]) !!} -->
                         </p>
                         
@@ -50,9 +50,9 @@
                         <!--サイドバーからの遷移等、住所情報を持っていない場合-->
                         @else
                             <!-- ▼住所入力フィールド(都道府県) -->
-                            <p>&emsp;都道府県：&emsp;<input type="text" name="pref31" size="10"></p>
+                            <p>&emsp;都道府県：&emsp;<input type="text" name="pref31" size="10" value = "{{ old('pref31') }}"></p>
                             <!-- ▼住所入力フィールド(都道府県以降の住所) -->
-                            <p>&emsp;以降の住所：<input type="text" name="addr31" size="40"></p>
+                            <p>&emsp;以降の住所：<input type="text" name="addr31" size="40" value = "{{ old('addr31') }}"></p>
                         @endif
                 </div>
     
@@ -61,15 +61,15 @@
                 <div class="row">
                     <div class="col-12 col-md-3">
                         {!! Form::label("image1", "1枚目　※任意", ['class' => 'control-label']) !!}
-                        {!! Form::file("image1", ["form-control"]) !!}
+                        {!! Form::file("image1", old("image1"), ["form-control"]) !!}
                     </div>
                     <div class="col-12 col-md-3">
                         {!! Form::label("image2", "2枚目　※任意", ['class' => 'control-label']) !!}
-                        {!! Form::file("image2", ["form-control"]) !!}
+                        {!! Form::file("image2", old("image2"), ["form-control"]) !!}
                     </div>
                     <div class="col-12 col-md-3">
                         {!! Form::label("image3", "3枚目　※任意", ['class' => 'control-label']) !!}
-                        {!! Form::file("image3", ["form-control"]) !!}
+                        {!! Form::file("image3", old("image3"), ["form-control"]) !!}
                     </div>
                 </div>      
                 
@@ -77,7 +77,7 @@
                 <p><strong>時期　※必須</strong></p>
                 <div class="row">
                     <div class="col-1 col-lg-1">
-                        <select name="month">
+                        <select name="month" value = "{{ old('month') }}">
                             <option value="">-</option>
                             <option value="1">1</option>
                             <option value="2">2</option>
@@ -111,7 +111,7 @@
 
                         <div class="col-12 col-md-3">
                             <div>カテゴリ1　※必須</div>
-                            <input type="text" name="category1" list="category1" placeholder="入力 or 選択">
+                            <input type="text" name="category1" list="category1" placeholder="入力 or 選択" value = "{{ old('category1') }}">
                                   <datalist id="category1">
                                     <!--categorymonths tableからカテゴリ一覧を取得-->
                                     <!--配列が多重になっているので、foreachを２回回している-->
@@ -128,7 +128,7 @@
                         <!--既に選択したカテゴリは表示しないようにするか、カテゴリが重複した場合はバリデーションで引っ掛ける -->
                         <div class="col-12 col-md-3">
                             <div>カテゴリ2　※任意</div>
-                            <input type="text" name="category2" list="category2" placeholder="入力 or 選択">
+                            <input type="text" name="category2" list="category2" placeholder="入力 or 選択" value = "{{ old('category2') }}">
                                   <datalist id="category2">
                                     <!--categorymonths tableからカテゴリ一覧を取得-->
                                     <!--配列が多重になっているので、foreachを２回回している-->
@@ -144,7 +144,7 @@
                         <!--既に選択したカテゴリは表示しないようにするか、カテゴリが重複した場合はバリデーションで引っ掛ける -->
                         <div class="col-12 col-md-3">
                             <div>カテゴリ3　※任意</div>
-                            <input type="text" name="category3" list="category3" placeholder="入力 or 選択">
+                            <input type="text" name="category3" list="category3" placeholder="入力 or 選択" value = "{{ old('category3') }}">
                                   <datalist id="category3">
                                     <!--categorymonths tableからカテゴリ一覧を取得-->
                                     <!--配列が多重になっているので、foreachを２回回している-->

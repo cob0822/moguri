@@ -32,20 +32,15 @@ Route::post("searching", "SearchController@searching")->name("searching");
 Route::get("ranking", "SearchController@ranking")->name("ranking");
 
 Route::get("post", "PostsController@post")->name("post");
-
-
-
+//post_confirmから戻るボタンで戻った際
+//Route::get("post/{prefecture}/{belowPrefecture}/{image1}/{image2}/{image3}/{month}/{category1}/{category2}/{category3}/{review}/{comment}", "PostsController@back_post")->name("back.post");
+//
 Route::get("post/{prefecture}/{belowPrefecture}", "PostsController@postThere")->name("post.there");
-
-
-
 
 Route::group(["prefix" => "post"], function(){
     Route::post("confirm", "PostsController@post_confirm")->name("post.confirm");
     Route::post("complete", "PostsController@post_complete")->name("post.complete");
 });
-
-
 
 //お問い合わせ
 Route::get("inquiry", "InquiriesController@inquiry")->name("inquiry");
