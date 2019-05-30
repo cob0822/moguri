@@ -132,6 +132,8 @@ class PostsController extends Controller
                "addr31" => "required",
                "month" => "required",
                "category1" => "required",
+               "category2" => "different:category1",
+               "category3" => "different:category1|different:category2",
                "review" => "required",
                "comment" => "required|max:300",
             ]);
@@ -146,6 +148,8 @@ class PostsController extends Controller
                "pointname" => ["required", new existpointname],
                "month" => "required",
                "category1" => "required",
+               "category2" => "different:category1",
+               "category3" => "different:category1|different:category2",
                "review" => "required",
                "comment" => "required|max:300",
             ]);
@@ -164,12 +168,21 @@ class PostsController extends Controller
         $area = $this->getArea($prefecture);
         
         if($request->hasFile("image1")){
+            $this->validate($request, [
+               "image1" => "image",
+            ]);
             $image1 = $request->file("image1");
         }
         if($request->hasFile("image2")){
+            $this->validate($request, [
+               "image2" => "image",
+            ]);
             $image2 = $request->file("image2");
         }
         if($request->hasFile("image3")){
+            $this->validate($request, [
+               "image3" => "image",
+            ]);
             $image3 = $request->file("image3");
         }
         
