@@ -19,7 +19,7 @@
                         <div class="row">
                             <div class="col-5 col-md-3">
                                 
-                                <div class="googleMap" id="googleMap{{$post->id}}"></div>
+                                <div class="googleMap" id="googleMap{{$post->id}}{{$post->review_id}}"></div>
                                 
                                 @if(isset($post->image1))
                                     <img src="{{$post->image1}}" width="50" height="40">
@@ -147,6 +147,6 @@
     <script>
         var points = {!! json_encode($reviews_points->toArray()) !!}
     </script>
-    <script src="/js/googleMaps.js"></script>
+    <script src="/js/googleMapsForPosted.js"></script>
     <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyATubpo-Sq-u-uWRaIZn7gv84_lwCNzRK8&callback=initMap"></script>
 @endsection
