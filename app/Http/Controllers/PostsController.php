@@ -153,26 +153,26 @@ class PostsController extends Controller
             $prefecture = $this->prefecture;
             $belowPrefecture = $this->belowPrefecture;
         }
-        //カテゴリ２、３が入力されている場合のバリデーション
-        if(isset($category2)){
-            $this->validate($request, [
-               "category2" => "different:category1",
-            ]);
-        }elseif(isset($category3) and is_null($category2)){
-            $this->validate($request, [
-               "category3" => "different:category1",
-            ]);
-        }elseif(isset($category3) and !is_null($category2)){
-            $this->validate($request, [
-               "category3" => "different:category1|different:category2",
-            ]);
-        }
         $month = (int)$request->month;
         $categories = [$request->category1, $request->category2, $request->category3];
         //categoriesからデータ取得できれば、以下１〜３は削除する
         $category1 = $request->category1;
         $category2 = $request->category2;
         $category3 = $request->category3;
+        //カテゴリ２、３が入力されている場合のバリデーション
+        if(isset($category2) and !isset($category3)){
+            $this->validate($request, [
+               "category2" => "different:category1",
+            ]);
+        }elseif(!isset($category2) and isset($category3)){
+            $this->validate($request, [
+               "category3" => "different:category1",
+            ]);
+        }elseif(isset($category2) and isset($category3)){
+            $this->validate($request, [
+               "category3" => "different:category1|different:category2",
+            ]);
+        }
         $review = $request->review;
         $comment = $request->comment;
         $area = $this->getArea($prefecture);
@@ -420,21 +420,21 @@ class PostsController extends Controller
         return view("posts.post_complete", compact("data"));
     }
     
-    public function post_modify(Request $request, $id){
+    public function post_modify(Request $request, $review_id){
         $this->validate($request, [
            "review" => "required_without:comment",
-           "comment" => "required_without:review",
+           "comment" => "required_without:review|max:300",
         ]);
         
         $review = $request->review;
         $comment = $request->comment;    
         
         if(isset($review) and isset($comment)){
-            \DB::table("reviews")->where("review_id", $id)->update(["review" => $review, "comment" => $comment]);    
+            \DB::table("reviews")->where("review_id", $review_id)->update(["review" => $review, "comment" => $comment]);    
         }elseif(isset($review)){
-            \DB::table("reviews")->where("review_id", $id)->update(["review" => $review]);
+            \DB::table("reviews")->where("review_id", $review_id)->update(["review" => $review]);
         }elseif(isset($comment)){
-            \DB::table("reviews")->where("review_id", $id)->update(["comment" => $comment]);
+            \DB::table("reviews")->where("review_id", $review_id)->update(["comment" => $comment]);
         }
         
         return back();

@@ -37,7 +37,7 @@ return [
     'exists'               => '指定された:attributeは存在しません。',
     'file'                 => ':attributeにはファイルを指定してください。',
     'filled'               => ':attributeには空でない値を指定してください。',
-    'image'                => ':attributeには画像ファイルを指定してください。',
+    'image'                => '画像ファイル以外はアップロードできません。jpg/pngなどのファイル形式がアップロード可能です。',
     //inは投稿画面の都道府県名のバリデーションにのみ使用
     'in'                   => ':attributeには実在する日本の都道府県名を入力してください。',
     'in_array'             => ':attributeが:otherに含まれていません。',

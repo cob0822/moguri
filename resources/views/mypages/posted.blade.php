@@ -64,10 +64,10 @@
                                 <div class="row">
                                     <div class="col-12 col-md-2">
                                         <!-- モーダルの表示 -->
-                                        <button type="button" class="btn btn-warning" data-toggle="modal" data-target="#exampleModal{{$post->id}}">
+                                        <button type="button" class="btn btn-warning" data-toggle="modal" data-target="#exampleModal{{$post->review_id}}">
                                             編集
                                         </button>
-                                        <div class="modal" id="exampleModal{{$post->id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                        <div class="modal" id="exampleModal{{$post->review_id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
                                             <div class="modal-dialog" role="document">
                                                 <div class="modal-content">
                                                     <div class="modal-header">
@@ -91,6 +91,7 @@
                                                         @endif
                                                         <br><br>
                                                         {!! Form::open(["route" => ["post.modify", $post->review_id]]) !!}
+                                                        
                                                             <span>レビュー</span><br>
                                                             <select name="review">
                                                                 <option value="">-</option>

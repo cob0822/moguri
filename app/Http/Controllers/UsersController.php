@@ -69,6 +69,9 @@ class UsersController extends Controller
         $user = User::find($id);
         
         if(isset($icon)){
+            $this->validate($request, [
+               "icon" => "image",
+            ]);
             //　/Iconフォルダにファイルのアップロード
             $disk = Storage::disk("s3")->put("/Icon", $icon, 'public');
             //アップロードしたファイルのフルパスを取得してログインユーザーのicon要素に代入

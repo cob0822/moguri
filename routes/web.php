@@ -32,9 +32,7 @@ Route::post("searching", "SearchController@searching")->name("searching");
 Route::get("ranking", "SearchController@ranking")->name("ranking");
 
 Route::get("post", "PostsController@post")->name("post");
-//post_confirmから戻るボタンで戻った際
-//Route::get("post/{prefecture}/{belowPrefecture}/{image1}/{image2}/{image3}/{month}/{category1}/{category2}/{category3}/{review}/{comment}", "PostsController@back_post")->name("back.post");
-//
+
 Route::get("post/{prefecture}/{belowPrefecture}", "PostsController@postThere")->name("post.there");
 
 Route::group(["prefix" => "post"], function(){
@@ -65,7 +63,7 @@ Route::group(["prefix" => "ranking/{id}"], function(){
 
 //ログイン後のprefixに入れるべきだが、入れると何故かエラーになる
 Route::get("mypost", "UsersController@mypost")->name("mypost");
-Route::post("mypost/modify/{id}", "PostsController@post_modify")->name("post.modify");
+Route::post("mypost/modify/{review_id}", "PostsController@post_modify")->name("post.modify");
 Route::get("detail/{id}", "SearchController@posted_to_detail")->name("posted_to_detail");
 
 Route::group(["middleware" => ["auth"]], function(){
